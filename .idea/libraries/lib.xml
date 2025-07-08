@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="libraryTable">
+    <library name="lib">
+      <CLASSES>
+        <root url="file://$PROJECT_DIR$/lib" />
+      </CLASSES>
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/lib" />
+      </SOURCES>
+    </library>
+  </component>
+</project>
