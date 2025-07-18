@@ -21,27 +21,24 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                     'length' => 256,
                 ],
             )),
-//            'api_key' => new \TextboxField(array(
-//                'label' => __('API Key'),
-//                'configuration' => array(
-//                    'size' => 60,
-//                    'length' => 100,
-//                ),
-//                'hint' => __('API key for authentication with the queue service'),
-//            )),
-//            'forward_enabled' => new \BooleanField(array(
-//                'label' => __('Enable Forwarding'),
-//                'default' => true,
-//                'hint' => __('Enable or disable ticket forwarding to the queue'),
-//            )),
-//            'debug_section' => new \SectionBreakField(array(
-//                'label' => __('Debug Settings'),
-//            )),
-//            'debug_logging' => new \BooleanField(array(
-//                'label' => __('Enable Debug Logging'),
-//                'default' => false,
-//                'hint' => __('Log all signal events to osTicket system log (Admin Panel → Dashboard → System Logs)'),
-//            )),
+            'api_key' => new \PasswordField(array(
+                'label' => __('API Key'),
+                'configuration' => array(
+                    'size' => 60,
+                    'length' => 256,
+                ),
+                'hint' => __('API key for authentication with the queue service'),
+            )),
+            'forward_enabled' => new \BooleanField(array(
+                'label' => __('Enable Forwarding'),
+                'default' => true,
+                'hint' => __('Enable or disable ticket forwarding to the queue'),
+            )),
+            'debug_logging' => new \BooleanField(array(
+                'label' => __('Enable Debug Logging'),
+                'default' => false,
+                'hint' => __('Log all signal events to osTicket system log (Admin Panel → Dashboard → System Logs)'),
+            )),
         );
     }
 
