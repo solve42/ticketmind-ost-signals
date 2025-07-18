@@ -4,44 +4,22 @@ namespace TicketMind\Data\Signals\osTicket\Configuration;
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
+require_once(INCLUDE_DIR . 'class.forms.php');
 
-
-use Bitfinex\Data\Streamer\osTicket\Fields\BasicTextboxField;
-use Bitfinex\Data\Streamer\osTicket\Fields\Validators\HelpdeskCodeFieldValidator;
 
 class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCustomConfig {
-    
-    // Compatibility function for older osTicket versions
-    function translate() {
-        if (!method_exists('Plugin', 'translate')) {
-            return array(
-                function($x) { return $x; },
-                function($x, $y, $n) { return $n != 1 ? $y : $x; }
-            );
-        }
-        return Plugin::translate('ticketmind-ost-signals');
-    }
-    
     public function getOptions() {
-        $weight = 0;
-        $increment = 100;
-
         return array(
             'section' => new \SectionBreakField(array(
                 'label' => __('TicketMind Queue Settings'),
-                '#weight' => ($weight += $increment),
             )),
-            'queue_url' => new \BasicTextboxField(array(
+            'queue_url' => new \TextboxField(array(
                 'label' => __('Queue URL'),
                 'hint' => __('The URL endpoint where tickets will be forwarded'),
-                'default' => NULL,
-                'required' => FALSE,
                 'configuration' => [
+                    'size' => 60,
                     'length' => 256,
-                    'validator-error' => __('URL is not valid'),
-                    'classes' => 'custom-form-field custom-form-field--basictextbox',
                 ],
-                '#weight' => ($weight += $increment),
             )),
 //            'api_key' => new \TextboxField(array(
 //                'label' => __('API Key'),
@@ -69,11 +47,50 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
 
     function renderConfig()
     {
-        // TODO: Implement renderConfig() method.
+        $options = [];
+        $form = $this->getForm();
+        include \BitfinexStreamerPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
     }
 
-    function saveConfig()
-    {
-        // TODO: Implement saveConfig() method.
+    function saveConfig() {
+        // TODO: Change copypasta
+        try {
+            $form = $this->getForm();
+
+            if ($form instanceof \Form && $form->isValid() === TRUE) {
+                $errors = [];
+                $values = $form->getClean();
+
+                $has_requirements = \is_array($values) === TRUE
+                    && $this->pre_save($values, $errors) === TRUE
+                    && \count($errors += $form->errors()) === 0;
+
+                if ($has_requirements) {
+                    $data = [];
+
+                    foreach ($values as $name => $value) {
+                        $field = $form->getField($name);
+
+                        if ($field instanceof \FormField) {
+                            try {
+                                $data[$name] = $field->to_database($value);
+                            }
+
+                            catch (\FieldUnchanged $ex) {
+                                unset($data[$name]);
+                            }
+                        }
+                    }
+
+                    return $this->updateAll($data);
+                }
+            }
+        }
+
+        catch (\Throwable $ex) {
+        }
+
+        return FALSE;
     }
+
 }

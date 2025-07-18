@@ -119,3 +119,19 @@ No testing framework is currently set up. When adding tests, consider:
 - `/var/log/apache2/osticket_access.log`
 - `/var/log/apache2/error.log`
 - `/var/log/apache2/access.log`
+
+### Debugging Errors
+
+If you encounter errors while developing or testing the plugin, you can use the provided script to retrieve osTicket logs:
+
+```bash
+# Run the log reader script
+./read-osticket-logs.sh
+```
+
+This script will:
+1. Connect to the remote osTicket server using credentials from the `.env` file
+2. Retrieve the latest osTicket error logs
+3. Display them for analysis
+
+This is particularly useful for debugging plugin initialization errors, configuration issues, or runtime exceptions that may not be visible in the osTicket UI.
