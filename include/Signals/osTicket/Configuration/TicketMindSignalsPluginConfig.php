@@ -29,14 +29,14 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                 ),
                 'hint' => __('API key for authentication with the queue service'),
             )),
-            'forward_enabled' => new \BooleanField(array(
+            'forward_enabled' => new ExtraBooleanField(array(
                 'label' => __('Enable Forwarding'),
-                'default' => true,
+                'default' => NULL,
                 'hint' => __('Enable or disable ticket forwarding to the queue'),
             )),
-            'debug_logging' => new \BooleanField(array(
+            'debug_logging' => new ExtraBooleanField(array(
                 'label' => __('Enable Debug Logging'),
-                'default' => false,
+                'default' => NULL,
                 'hint' => __('Log all signal events to osTicket system log (Admin Panel → Dashboard → System Logs)'),
             )),
         );
@@ -46,7 +46,12 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
     {
         $options = [];
         $form = $this->getForm();
-        include \BitfinexStreamerPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
+        include \TicketMindSignalsPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
+    }
+
+    function renderCustomConfig()
+    {
+        $this->renderConfig();
     }
 
     function saveConfig() {

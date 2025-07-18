@@ -9,7 +9,7 @@ PHP and follows osTicket's plugin architecture.
 
 ## Reference Implementation
 
-The `@../bfx-ost-streamer-tm` directory contains a mature reference implementation of an osTicket streaming plugin that demonstrates:
+The `@../bfx-ost-streamer` directory contains a mature reference implementation of an osTicket streaming plugin that demonstrates:
 - Complete factory pattern implementation for all components (Stream, Record, Serializer, Encoder, Tuple, UseCase)
 - Signal-based extensibility system for runtime configuration
 - Comprehensive validation framework

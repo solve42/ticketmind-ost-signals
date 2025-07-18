@@ -5,6 +5,8 @@ require_once dirname(__FILE__) . '/lib/autoload.php';
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
 use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
+use TicketMind\Data\Signals\osTicket\Configuration\Helper;
+use TicketMind\Data\Signals\osTicket\Client\RestApiClient;
 
 /**
  * Entry point class to the plugin.
@@ -60,7 +62,22 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   public function onTicketCreated(\Ticket $ticket, &$extra) {
-      error_log('TicketMind OST onTicketCreated called');
+      error_log("---onTicketCreated 1 ---");
+      if (Helper::isDebugLoggingEnabled()) {
+          error_log('TicketMind OST onTicketCreated called');
+      }
+      error_log("---onTicketCreated 2 ---");
+
+      if (!Helper::isForwardingEnabled()) {
+          error_log("---onTicketCreated 3 ---");
+          if (Helper::isDebugLoggingEnabled()) {
+              error_log('TicketMind: Forwarding disabled, skipping ticket creation');
+          }
+          return;
+      }
+
+      error_log("---onTicketCreated 4 ---");
+
       $msg = [
           'ticket_number' => $ticket->getNumber(),
           'thread_id' => $ticket->getThreadId(),
@@ -71,19 +88,33 @@ class TicketMindSignalsPlugin extends \Plugin {
           'signal' => 'ticket.created',
           'ticket_id' => $ticket->getId(),
           'created_dt' => $ticket->getCreateDate(),
-          'extra' => $msg,
+          'extra' => $msg
       ];
 
-      // Log full data as JSON for detailed debugging
-      error_log(
-          sprintf('TicketMind Signal Data: ticket.created - %s',
-          json_encode($data, JSON_PRETTY_PRINT))
-      );
-
-      // TODO: Implement queue forwarding logic
+      error_log("---onTicketCreated 5 ---");
+      $apiClient = new RestApiClient();
+      error_log("---onTicketCreated 6 ---");
+      $success = $apiClient->sendPayload($data);
+      error_log("---onTicketCreated 7 ---");
   }
 
   public function onThreadEntryCreated(\ThreadEntry $entry) {
+      error_log("---onThreadEntryCreated 1 ---");
+      if (Helper::isDebugLoggingEnabled()) {
+          error_log('TicketMind OST onThreadEntryCreated called');
+      }
+      error_log("---onThreadEntryCreated 2 ---");
+
+      if (!Helper::isForwardingEnabled()) {
+          error_log("---onThreadEntryCreated 3 ---");
+          if (Helper::isDebugLoggingEnabled()) {
+              error_log('TicketMind: Forwarding disabled, skipping thread entry creation');
+          }
+          return;
+      }
+
+      error_log("---onThreadEntryCreated 4 ---");
+
       $msg = [
           'id' => $entry->getId(),
           'thread_id' => $entry->getThreadId(),
@@ -99,15 +130,14 @@ class TicketMindSignalsPlugin extends \Plugin {
           'created_dt' => $entry->getCreateDate(),
           'extra' => $msg,
       ];
-      
-      error_log(
-          sprintf(
-              'TicketMind Signal Data: threadentry.created -%s',
-              json_encode($entry, JSON_PRETTY_PRINT)
-          )
-      );
-      
-      // TODO: Implement thread entry created logic
+
+      error_log("---onThreadEntryCreated 5 ---");
+      $apiClient = new RestApiClient();
+
+      error_log("---onThreadEntryCreated 6 ---");
+      $success = $apiClient->sendPayload($data);
+
+      error_log("---onThreadEntryCreated 7 ---");
   }
 
   public function updateModel($object, $type) {

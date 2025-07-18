@@ -7,5 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="bfx-ost-streamer-tm" />
+    <orderEntry type="module" module-name="osTicket" />
   </component>
 </module>

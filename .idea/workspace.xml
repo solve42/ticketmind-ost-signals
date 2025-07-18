@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ComposerSettings">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/../osTicket/include/mpdf/composer.json" />
+      <option value="$PROJECT_DIR$/../bfx-ost-streamer/composer.json" />
+      <option value="$PROJECT_DIR$/../osTicket/include/laminas-mail/composer.json" />
+    </option>
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 8.2">
+    <include_path>
+      <path value="$PROJECT_DIR$/lib/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-stdlib" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-servicemanager" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-loader" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-validator" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-mime" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-php72" />
+    </include_path>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="303cyrEuJNfJI6kI1GrA9eIMaIU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "web.server",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PS-251.26927.60" />
+        <option value="bundled-php-predefined-a98d8de5180a-e5747d4f5a45-com.jetbrains.php.sharedIndexes-PS-251.26927.60" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="" />
+      <created>1752859954165</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1752859954165</updated>
+      <workItem from="1752859956013" duration="2237000" />
+      <workItem from="1752870142495" duration="2780000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

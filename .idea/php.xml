@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/lib/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-stdlib" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-servicemanager" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-loader" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-validator" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-mime" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-php72" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>

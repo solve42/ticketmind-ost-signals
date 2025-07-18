@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer-tm.iml" filepath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer-tm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../osTicket/.idea/osTicket.iml" filepath="$PROJECT_DIR$/../osTicket/.idea/osTicket.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" filepath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" />
     </modules>
   </component>
