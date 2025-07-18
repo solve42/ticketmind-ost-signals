@@ -61,12 +61,17 @@ class TicketMindSignalsPlugin extends \Plugin {
 
   public function onTicketCreated(\Ticket $ticket, &$extra) {
       error_log('TicketMind OST onTicketCreated called');
+      $msg = [
+          'ticket_number' => $ticket->getNumber(),
+          'thread_id' => $ticket->getThreadId(),
+          'source' => $ticket->getSource(),
+      ];
+
       $data = [
           'signal' => 'ticket.created',
           'ticket_id' => $ticket->getId(),
-          'ticket_number' => $ticket->getNumber(),
-          'thread_id' => $ticket->getThreadId(),
           'created_dt' => $ticket->getCreateDate(),
+          'extra' => $msg,
       ];
 
       // Log full data as JSON for detailed debugging
@@ -79,15 +84,20 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   public function onThreadEntryCreated(\ThreadEntry $entry) {
-      $data = [
-          'signal' => 'threadentry.created',
+      $msg = [
           'id' => $entry->getId(),
           'thread_id' => $entry->getThreadId(),
-          'created_dt' => $entry->getCreateDate(),
           'updated_dt' => $entry->getUpdateDate(),
           'source' => $entry->getSource(),
           'type' => $entry->getTypes(),
           'staff_id' => $entry->getStaffId(),
+      ];
+
+      $data = [
+          'signal' => 'threadentry.created',
+          'ticket_id' => $entry->getId(),
+          'created_dt' => $entry->getCreateDate(),
+          'extra' => $msg,
       ];
       
       error_log(
