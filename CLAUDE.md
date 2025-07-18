@@ -7,6 +7,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an osTicket plugin for TicketMind integration that forwards tickets to a queue system. The plugin is built using
 PHP and follows osTicket's plugin architecture.
 
+## Reference Implementation
+
+The `@../bfx-ost-streamer-tm` directory contains a mature reference implementation of an osTicket streaming plugin that demonstrates:
+- Complete factory pattern implementation for all components (Stream, Record, Serializer, Encoder, Tuple, UseCase)
+- Signal-based extensibility system for runtime configuration
+- Comprehensive validation framework
+- Multi-format data streaming (JSON, CSV, Line-delimited JSON)
+- Multiple encoding options (Base64, Hex, UTF-8)
+- Production-ready error handling and logging
+
+Study this implementation for architectural patterns and best practices when implementing the TicketMind integration.
+
 ## Technology Stack
 
 - **PHP**: >= 7.1 (with ext-json, ext-filter, ext-mbstring)
@@ -23,6 +35,33 @@ The plugin follows osTicket's standard plugin structure:
     - Single-instance plugin (`isMultiInstance() = FALSE`)
     - Bootstrap method contains commented UseCase factory pattern (not yet implemented)
     - Custom enable() method that modifies plugin name in database
+
+### Architectural Patterns (from Reference Implementation)
+
+The reference implementation demonstrates several key patterns that should be followed:
+
+1. **Factory Pattern**: All components use factories extending `AbstractFactory`
+   - StreamFactory, RecordFactory, SerializerFactory, EncoderFactory, TupleFactory, UseCaseFactory
+   
+2. **Data Pipeline Architecture**:
+   ```
+   osTicket Event → UseCase → Tuple → Serializer → Encoder → Record → Stream → External System
+   ```
+
+3. **Signal/Action System**: Extensibility through osTicket signals
+   - Format signals: `ticketmind.data.stream.format.<component>`
+   - Option signals: `ticketmind.data.stream.option.<component>`
+   - Use case signals: `ticketmind.data.stream.use_case`
+
+4. **Interface-Driven Design**: Core interfaces to implement:
+   - `ActionInterface`: Event-driven actions
+   - `StreamInterface`: Stream implementations
+   - `RecordInterface`: Data records
+   - `SerializerInterface`: Data serialization
+   - `EncoderInterface`: Data encoding
+   - `TupleInterface`: Data collection
+   - `UseCaseInterface`: Business logic
+   - `ValidatorInterface`: Input validation
 
 ## Development Commands
 
@@ -53,9 +92,7 @@ When developing features:
 
 - Extend osTicket's base classes and follow their patterns
 - Use osTicket's database abstraction layer (`db_query`, `db_input`, etc.)
-    - The commented UseCase factory pattern in bootstrap() suggests a modular approach for different ticket forwarding
-      scenarios
-        - Follow osTicket's configuration patterns for plugin settings:
+- Follow osTicket's configuration patterns for plugin settings:
           It looks the following:
 
           ```php
