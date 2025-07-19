@@ -11,11 +11,11 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
     public function getOptions() {
         return array(
             'section' => new \SectionBreakField(array(
-                'label' => __('TicketMind Queue Settings'),
+                'label' => __('TicketMind Settings'),
             )),
             'queue_url' => new \TextboxField(array(
-                'label' => __('Queue URL'),
-                'hint' => __('The URL endpoint where tickets will be forwarded'),
+                'label' => __('TicketMind Host'),
+                'hint' => __('The TicketMind Host URL'),
                 'configuration' => [
                     'size' => 60,
                     'length' => 256,
@@ -28,6 +28,11 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                     'length' => 256,
                 ),
                 'hint' => __('API key for authentication with the queue service'),
+            )),
+            'with_content' => new ExtraBooleanField(array(
+                'label' => __('Include Content'),
+                'default' => NULL,
+                'hint' => __('Should the subject and body of the ticket be included in the message, or only the header?'),
             )),
             'forward_enabled' => new ExtraBooleanField(array(
                 'label' => __('Enable Forwarding'),

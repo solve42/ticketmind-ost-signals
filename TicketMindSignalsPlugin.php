@@ -43,14 +43,22 @@ class TicketMindSignalsPlugin extends \Plugin {
       return $ost;
   }
 
-  protected function logInfo($title, $message) {
+  protected function logInfo($title, $message): void {
       $this->getLogger()->logInfo($title, $message);
   }
+
+    protected function logDebug($title, $message): void {
+        $this->getLogger()->logDebug($title, $message);
+    }
+
+    protected function logError($title, $message): void {
+        $this->getLogger()->logError($title, $message);
+    }
 
   /**
    * {@inheritDoc}
    */
-  function bootstrap() {
+  function bootstrap(): void {
       //error_log('TicketMind OST Signals Plugin has been initialized');
       
       \Signal::connect('ticket.created',[$this, 'onTicketCreated']);
@@ -61,19 +69,18 @@ class TicketMindSignalsPlugin extends \Plugin {
       error_log('TicketMind OST Signals Connected!');
   }
 
-  public function onTicketCreated(\Ticket $ticket, &$extra) {
-      if (Helper::isDebugLoggingEnabled()) {
-          error_log('TicketMind OST onTicketCreated called');
-      }
+  public function onTicketCreated(\Ticket $ticket, &$extra): void {
+      $this->logDebug('TicketMind OST Signal Called', 'signal onTicketCreated');
 
       if (!Helper::isForwardingEnabled()) {
-          if (Helper::isDebugLoggingEnabled()) {
-              error_log('TicketMind: Forwarding disabled, skipping ticket creation');
-          }
+          $this->logDebug(
+              'TicketMind OST Signal Called',
+              'Forwarding disabled, ticket id ' . $ticket->getNumber()
+          );
           return;
       }
 
-      $msg = [
+      $extra_data = [
           'ticket_number' => $ticket->getNumber(),
           'thread_id' => $ticket->getThreadId(),
           'source' => $ticket->getSource(),
@@ -83,29 +90,36 @@ class TicketMindSignalsPlugin extends \Plugin {
           'signal' => 'ticket.created',
           'ticket_id' => $ticket->getId(),
           'created_dt' => $ticket->getCreateDate(),
-          'extra' => $msg
+          'extra' => $extra_data
       ];
 
-      error_log("---onTicketCreated 5 ---");
       $apiClient = new RestApiClient();
-      error_log("---onTicketCreated 6 ---");
       $success = $apiClient->sendPayload($data);
-      error_log("---onTicketCreated 7 ---");
+      if ($success) {
+          $this->logDebug(
+              'TicketMind Signal: ticket.created',
+              sprintf('Ticket send successfully - ID: %s', $ticket->getNumber())
+          );
+      }else {
+          $this->logError(
+              'TicketMind Signal Data: ticket.created',
+              sprintf('Ticket send failed - ID: %s', $ticket->getNumber())
+          );
+      }
   }
 
-  public function onThreadEntryCreated(\ThreadEntry $entry) {
-      if (Helper::isDebugLoggingEnabled()) {
-          error_log('TicketMind OST onThreadEntryCreated called');
-      }
+  public function onThreadEntryCreated(\ThreadEntry $entry): void {
+      $this->logDebug('TicketMind OST Signal Called', 'onThreadEntryCreated');
 
       if (!Helper::isForwardingEnabled()) {
-          if (Helper::isDebugLoggingEnabled()) {
-              error_log('TicketMind: Forwarding disabled, skipping thread entry creation');
-          }
+          $this->logDebug(
+              'TicketMind OST Signal Called',
+              'Forwarding disabled, ticket id ' . $entry->getThreadId()
+          );
           return;
       }
 
-      $msg = [
+      $extra_data = [
           'id' => $entry->getId(),
           'thread_id' => $entry->getThreadId(),
           'updated_dt' => $entry->getUpdateDate(),
@@ -118,16 +132,23 @@ class TicketMindSignalsPlugin extends \Plugin {
           'signal' => 'threadentry.created',
           'ticket_id' => $entry->getId(),
           'created_dt' => $entry->getCreateDate(),
-          'extra' => $msg,
+          'extra' => $extra_data,
       ];
 
-      error_log("---onThreadEntryCreated 5 ---");
       $apiClient = new RestApiClient();
 
-      error_log("---onThreadEntryCreated 6 ---");
       $success = $apiClient->sendPayload($data);
-
-      error_log("---onThreadEntryCreated 7 ---");
+      if ($success) {
+          $this->logDebug(
+              'TicketMind Signal: threadentry.created',
+              sprintf('Ticket send successfully - ID: %s', $entry->getThreadId())
+          );
+      }else {
+          $this->logError(
+              'TicketMind Signal Data: threadentry.created',
+              sprintf('Ticket send failed - ID: %s', $entry->getThreadId())
+          );
+      }
   }
 
   public function updateModel($object, $type) {

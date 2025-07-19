@@ -10,6 +10,7 @@ class Helper {
     const API_KEY = 'api_key';
     const FORWARD_ENABLED = 'forward_enabled';
     const DEBUG_LOGGING = 'debug_logging';
+    const WITH_CONTENT = 'with_content';
 
     public static function getQueueUrl(): ?string {
         return static::getConfigAsTextboxField(static::QUEUE_URL)?->getClean();
@@ -25,5 +26,9 @@ class Helper {
 
     public static function isDebugLoggingEnabled(): bool {
         return (bool) static::getConfigAsBooleanField(static::DEBUG_LOGGING)?->getClean();
+    }
+
+    public static function includeContent(): bool {
+        return (bool) static::getConfigAsBooleanField(static::WITH_CONTENT)?->getClean();
     }
 }

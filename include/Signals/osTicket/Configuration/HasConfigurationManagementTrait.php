@@ -4,6 +4,13 @@ namespace TicketMind\Data\Signals\osTicket\Configuration;
 
 trait HasConfigurationManagementTrait {
 
+    /**
+     * @template T of \FormField
+     * @param T $field
+     * @param string $name
+     * @return T
+     */
+
     protected static function getConfigAsFormField(\FormField $field, string $name): \FormField {
         try {
             $plugin = \PluginManager::getInstance(
