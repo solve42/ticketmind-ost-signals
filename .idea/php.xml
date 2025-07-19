@@ -32,6 +32,12 @@
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-mime" />
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/container" />
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client" />
+      <path value="$PROJECT_DIR$/lib/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/lib/psr/container" />
+      <path value="$PROJECT_DIR$/lib/psr/log" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
@@ -43,6 +49,7 @@
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/lib/autoload.php" />
     </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">

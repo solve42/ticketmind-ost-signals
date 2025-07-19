@@ -4,21 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="Fixed Password field">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +62,12 @@
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-mime" />
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/container" />
       <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client" />
+      <path value="$PROJECT_DIR$/lib/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/lib/psr/container" />
+      <path value="$PROJECT_DIR$/lib/psr/log" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -84,7 +91,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "web.server",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -104,11 +111,35 @@
       <option name="presentableId" value="Default" />
       <updated>1752859954165</updated>
       <workItem from="1752859956013" duration="2237000" />
-      <workItem from="1752870142495" duration="2780000" />
+      <workItem from="1752870142495" duration="6447000" />
+      <workItem from="1752881021242" duration="367000" />
+      <workItem from="1752916270109" duration="2500000" />
     </task>
+    <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
+      <option name="closed" value="true" />
+      <created>1752872987273</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752872987273</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed Password field">
+      <option name="closed" value="true" />
+      <created>1752924638931</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752924638931</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
+    <MESSAGE value="Fixed Password field" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Password field" />
   </component>
 </project>

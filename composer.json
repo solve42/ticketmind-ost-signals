@@ -10,10 +10,11 @@
   ],
   "type": "project",
   "require": {
-    "php": ">=7.0",
+    "php": ">=8.2",
     "ext-json": "*",
     "ext-filter": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "symfony/http-client": "^6.0|^7.0"
   },
   "license": "Apache-2.0",
   "authors": [
