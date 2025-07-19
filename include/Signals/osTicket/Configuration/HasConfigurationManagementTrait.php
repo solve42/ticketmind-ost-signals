@@ -35,9 +35,9 @@ trait HasConfigurationManagementTrait {
         );
     }
 
-    protected static function getConfigAsPasswordField(string $name): \PasswordField {
+    protected static function getConfigAsPasswordField(string $name): \TextboxField {
         return static::getConfigAsFormField(
-            new \PasswordField(),
+            new \TextboxField(),
             $name
         );
     }
@@ -48,10 +48,4 @@ trait HasConfigurationManagementTrait {
             $name
         );
     }
-//    protected static function getConfigAsTertiumNonDaturField(string $name) : TertiumNonDaturField {
-//        return static::getConfigAsFormField(
-//            new TertiumNonDaturField(),
-//            $name
-//        );
-//    }
 }

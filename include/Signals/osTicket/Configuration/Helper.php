@@ -12,18 +12,18 @@ class Helper {
     const DEBUG_LOGGING = 'debug_logging';
 
     public static function getQueueUrl(): ?string {
-        return static::getConfigAsTextboxField(static::QUEUE_URL)->getClean();
+        return static::getConfigAsTextboxField(static::QUEUE_URL)?->getClean();
     }
 
     public static function getApiKey(): ?string {
-        return static::getConfigAsPasswordField(static::API_KEY)->getClean();
+        return static::getConfigAsPasswordField(static::API_KEY)?->getClean();
     }
 
     public static function isForwardingEnabled(): bool {
-        return (bool) static::getConfigAsBooleanField(static::FORWARD_ENABLED)->getClean();
+        return (bool) static::getConfigAsBooleanField(static::FORWARD_ENABLED)?->getClean();
     }
 
     public static function isDebugLoggingEnabled(): bool {
-        return (bool) static::getConfigAsBooleanField(static::DEBUG_LOGGING)->getClean();
+        return (bool) static::getConfigAsBooleanField(static::DEBUG_LOGGING)?->getClean();
     }
 }
