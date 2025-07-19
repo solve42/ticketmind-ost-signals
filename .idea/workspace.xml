@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="replaced curl by symphony/http-client">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="working initial">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
@@ -12,10 +12,6 @@
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +106,7 @@
       <workItem from="1752870142495" duration="6447000" />
       <workItem from="1752881021242" duration="367000" />
       <workItem from="1752916270109" duration="3395000" />
-      <workItem from="1752928924671" duration="216000" />
+      <workItem from="1752928924671" duration="598000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -136,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752925586058</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="working initial">
+      <option name="closed" value="true" />
+      <created>1752933105245</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752933105245</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +150,7 @@
     <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
     <MESSAGE value="Fixed Password field" />
     <MESSAGE value="replaced curl by symphony/http-client" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced curl by symphony/http-client" />
+    <MESSAGE value="working initial" />
+    <option name="LAST_COMMIT_MESSAGE" value="working initial" />
   </component>
 </project>
