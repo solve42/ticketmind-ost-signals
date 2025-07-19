@@ -4,9 +4,9 @@ require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
-use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
-use TicketMind\Data\Signals\osTicket\Configuration\Helper;
 use TicketMind\Data\Signals\osTicket\Client\RestApiClient;
+use TicketMind\Data\Signals\osTicket\Configuration\Helper;
+use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
 /**
  * Entry point class to the plugin.
@@ -62,21 +62,16 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   public function onTicketCreated(\Ticket $ticket, &$extra) {
-      error_log("---onTicketCreated 1 ---");
       if (Helper::isDebugLoggingEnabled()) {
           error_log('TicketMind OST onTicketCreated called');
       }
-      error_log("---onTicketCreated 2 ---");
 
       if (!Helper::isForwardingEnabled()) {
-          error_log("---onTicketCreated 3 ---");
           if (Helper::isDebugLoggingEnabled()) {
               error_log('TicketMind: Forwarding disabled, skipping ticket creation');
           }
           return;
       }
-
-      error_log("---onTicketCreated 4 ---");
 
       $msg = [
           'ticket_number' => $ticket->getNumber(),
@@ -99,21 +94,16 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   public function onThreadEntryCreated(\ThreadEntry $entry) {
-      error_log("---onThreadEntryCreated 1 ---");
       if (Helper::isDebugLoggingEnabled()) {
           error_log('TicketMind OST onThreadEntryCreated called');
       }
-      error_log("---onThreadEntryCreated 2 ---");
 
       if (!Helper::isForwardingEnabled()) {
-          error_log("---onThreadEntryCreated 3 ---");
           if (Helper::isDebugLoggingEnabled()) {
               error_log('TicketMind: Forwarding disabled, skipping thread entry creation');
           }
           return;
       }
-
-      error_log("---onThreadEntryCreated 4 ---");
 
       $msg = [
           'id' => $entry->getId(),

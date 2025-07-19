@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="Fixed Password field">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="replaced curl by symphony/http-client">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
@@ -12,12 +12,8 @@
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" afterDir="false" />
     </list>
@@ -78,23 +74,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.webide.settings.project.settings.php&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -113,7 +109,8 @@
       <workItem from="1752859956013" duration="2237000" />
       <workItem from="1752870142495" duration="6447000" />
       <workItem from="1752881021242" duration="367000" />
-      <workItem from="1752916270109" duration="2500000" />
+      <workItem from="1752916270109" duration="3395000" />
+      <workItem from="1752928924671" duration="216000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -131,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752924638931</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="replaced curl by symphony/http-client">
+      <option name="closed" value="true" />
+      <created>1752925586058</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752925586058</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +145,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
     <MESSAGE value="Fixed Password field" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Password field" />
+    <MESSAGE value="replaced curl by symphony/http-client" />
+    <option name="LAST_COMMIT_MESSAGE" value="replaced curl by symphony/http-client" />
   </component>
 </project>

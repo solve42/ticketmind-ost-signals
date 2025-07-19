@@ -2,10 +2,10 @@
 
 namespace TicketMind\Data\Signals\osTicket\Client;
 
-use TicketMind\Data\Signals\osTicket\Configuration\Helper;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use TicketMind\Data\Signals\osTicket\Configuration\Helper;
 
 class RestApiClient {
 
@@ -39,7 +39,7 @@ class RestApiClient {
             $response = $this->httpClient->request('POST', $this->queueUrl, [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $this->apiKey,
+                    'Authorization' => 'Token ' . $this->apiKey,
                     'User-Agent' => 'TicketMind-OST-Signals/1.0',
                 ],
                 'body' => $jsonPayload,
