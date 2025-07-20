@@ -39,11 +39,6 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                 'default' => NULL,
                 'hint' => __('Enable or disable ticket forwarding to the queue'),
             )),
-            'debug_logging' => new ExtraBooleanField(array(
-                'label' => __('Enable Debug Logging'),
-                'default' => NULL,
-                'hint' => __('Log all signal events to osTicket system log (Admin Panel → Dashboard → System Logs)'),
-            )),
         );
     }
 

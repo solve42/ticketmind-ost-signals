@@ -9,7 +9,6 @@ class Helper {
     const QUEUE_URL = 'queue_url';
     const API_KEY = 'api_key';
     const FORWARD_ENABLED = 'forward_enabled';
-    const DEBUG_LOGGING = 'debug_logging';
     const WITH_CONTENT = 'with_content';
 
     public static function getQueueUrl(): ?string {
@@ -22,10 +21,6 @@ class Helper {
 
     public static function isForwardingEnabled(): bool {
         return (bool) static::getConfigAsBooleanField(static::FORWARD_ENABLED)?->getClean();
-    }
-
-    public static function isDebugLoggingEnabled(): bool {
-        return (bool) static::getConfigAsBooleanField(static::DEBUG_LOGGING)?->getClean();
     }
 
     public static function includeContent(): bool {

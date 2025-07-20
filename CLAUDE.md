@@ -22,7 +22,7 @@ Study this implementation for architectural patterns and best practices when imp
 ## Technology Stack
 
 - **PHP**: >= 7.1 (with ext-json, ext-filter, ext-mbstring)
-- **Framework**: osTicket plugin framework (v1.10+)
+- **Framework**: osTicket plugin framework (v1.10+) for a documentation see @./../osTicket/AI_DOCUMENTATION.md
 - **Dependency Management**: Composer (custom vendor directory: `lib/`)
 - **Namespace**: `TicketMind\Data\` (PSR-4 autoloading from `include/` directory)
 

@@ -30,29 +30,18 @@ class TicketMindSignalsPlugin extends \Plugin {
 
   function __construct() {
       parent::__construct();
-      error_log('TicketMind OST Signals Plugin CTOR');
   }
 
-  /**
-   * Get the global osTicket instance for logging
-   *
-   * @return osTicket|null
-   */
-  protected function getLogger() {
-      global $ost;
-      return $ost;
+  protected function logInfo($message): void {
+      $GLOBALS['ost']->logInfo('TicketMind Plugin', $message);
   }
 
-  protected function logInfo($title, $message): void {
-      $this->getLogger()->logInfo($title, $message);
-  }
-
-    protected function logDebug($title, $message): void {
-        $this->getLogger()->logDebug($title, $message);
+    protected function logDebug($message): void {
+        $GLOBALS['ost']->logDebug('TicketMind Plugin', $message);
     }
 
-    protected function logError($title, $message): void {
-        $this->getLogger()->logError($title, $message);
+    protected function logError($message): void {
+        $GLOBALS['ost']->logError('TicketMind Plugin', $message);
     }
 
   /**
@@ -70,13 +59,10 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   public function onTicketCreated(\Ticket $ticket, &$extra): void {
-      $this->logDebug('TicketMind OST Signal Called', 'signal onTicketCreated');
+      $this->logDebug('Signal onTicketCreated');
 
       if (!Helper::isForwardingEnabled()) {
-          $this->logDebug(
-              'TicketMind OST Signal Called',
-              'Forwarding disabled, ticket id ' . $ticket->getNumber()
-          );
+          $this->logDebug('Forwarding disabled, ticket id ' . $ticket->getThreadId());
           return;
       }
 
@@ -97,25 +83,20 @@ class TicketMindSignalsPlugin extends \Plugin {
       $success = $apiClient->sendPayload($data);
       if ($success) {
           $this->logDebug(
-              'TicketMind Signal: ticket.created',
-              sprintf('Ticket send successfully - ID: %s', $ticket->getNumber())
+              sprintf('Signal: ticket.created. Ticket send successfully - Number: %s', $ticket->getNumber())
           );
       }else {
           $this->logError(
-              'TicketMind Signal Data: ticket.created',
-              sprintf('Ticket send failed - ID: %s', $ticket->getNumber())
+              sprintf('Signal: ticket.created send failed - Number: %s', $ticket->getNumber())
           );
       }
   }
 
   public function onThreadEntryCreated(\ThreadEntry $entry): void {
-      $this->logDebug('TicketMind OST Signal Called', 'onThreadEntryCreated');
+      $this->logDebug('Signal Called onThreadEntryCreated');
 
       if (!Helper::isForwardingEnabled()) {
-          $this->logDebug(
-              'TicketMind OST Signal Called',
-              'Forwarding disabled, ticket id ' . $entry->getThreadId()
-          );
+          $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
           return;
       }
 
@@ -128,11 +109,33 @@ class TicketMindSignalsPlugin extends \Plugin {
           'staff_id' => $entry->getStaffId(),
       ];
 
+      if (!Helper::includeContent()) {
+          $full_data = $extra_data;
+      } else {
+          $this->logDebug('Signal: threadentry.created Send with full content' . $entry->getThreadId());
+
+          $content = [
+              'type_name' => $entry->getTypeName(),
+              'title' => $entry->getTitle(),
+              'body' => $entry->getBody(),
+              'message' => $entry->getMessage(),
+              'email_message_id' => $entry->getEmailMessageId(),
+              'name' => $entry->getName(),
+              'email_header' => $entry->getEmailHeader(),
+              //'poster' => $this->serializeObject($entry->getPoster()), // GDPR relevant
+              'user_id' => $entry->getUserId(), // GDPR relevant
+              //'user' => $this->serializeObject($entry->getUser()), // GDPR relevant
+              //'editor' => $this->serializeObject($entry->getEditor()), // GDPR relevant
+          ];
+
+          $full_data = array_merge($extra_data, $content);
+      }
+
       $data = [
           'signal' => 'threadentry.created',
           'ticket_id' => $entry->getId(),
           'created_dt' => $entry->getCreateDate(),
-          'extra' => $extra_data,
+          'extra' => $full_data,
       ];
 
       $apiClient = new RestApiClient();
@@ -140,13 +143,11 @@ class TicketMindSignalsPlugin extends \Plugin {
       $success = $apiClient->sendPayload($data);
       if ($success) {
           $this->logDebug(
-              'TicketMind Signal: threadentry.created',
-              sprintf('Ticket send successfully - ID: %s', $entry->getThreadId())
+              sprintf('Signal: threadentry.created. Ticket send successfully - ID: %s', $entry->getThreadId())
           );
       }else {
           $this->logError(
-              'TicketMind Signal Data: threadentry.created',
-              sprintf('Ticket send failed - ID: %s', $entry->getThreadId())
+              sprintf('Signal: threadentry.created send failed - ID: %s', $entry->getThreadId())
           );
       }
   }
@@ -158,27 +159,9 @@ class TicketMindSignalsPlugin extends \Plugin {
           'model_id' => method_exists($object, 'getId') ? $object->getId() : 'N/A',
           'timestamp' => date('Y-m-d H:i:s')
       ];
-      
-//      // Add model-specific data based on type
-//      if ($object instanceof Ticket) {
-//          $data['ticket_number'] = $object->getNumber();
-//          $data['ticket_status'] = $object->getStatus();
-//          $data['ticket_subject'] = $object->getSubject();
-//          $data['ticket_dept_id'] = $object->getDeptId();
-//      } elseif ($object instanceof Task) {
-//          $data['task_number'] = $object->getNumber();
-//          $data['task_title'] = $object->getTitle();
-//          $data['task_status'] = $object->getStatus();
-//      } elseif ($object instanceof User) {
-//          $data['user_email'] = $object->getEmail();
-//          $data['user_name'] = $object->getName();
-//      } elseif ($object instanceof Organization) {
-//          $data['org_name'] = $object->getName();
-//      }
-//
+
       $this->logInfo(
-          'TicketMind Signal: model.updated',
-          sprintf('Model updated - Type: %s, Class: %s, ID: %s',
+          sprintf('Signal model.updated - Type: %s, Class: %s, ID: %s',
               $type,
               get_class($object),
               $data['model_id']
@@ -186,8 +169,7 @@ class TicketMindSignalsPlugin extends \Plugin {
       );
       
       $this->logInfo(
-          'TicketMind Signal Data: model.updated',
-          json_encode($data, JSON_PRETTY_PRINT)
+          'Signal: model.updated',
       );
       
       // TODO: Implement model update logic
@@ -200,24 +182,9 @@ class TicketMindSignalsPlugin extends \Plugin {
           'model_id' => method_exists($object, 'getId') ? $object->getId() : 'N/A',
           'timestamp' => date('Y-m-d H:i:s')
       ];
-//
-//      // Capture as much data as possible before deletion
-//      if ($object instanceof Ticket) {
-//          $data['ticket_number'] = $object->getNumber();
-//          $data['ticket_subject'] = $object->getSubject();
-//          $data['ticket_status'] = $object->getStatus();
-//      } elseif ($object instanceof Task) {
-//          $data['task_number'] = $object->getNumber();
-//          $data['task_title'] = $object->getTitle();
-//      } elseif ($object instanceof User) {
-//          $data['user_email'] = $object->getEmail();
-//          $data['user_name'] = $object->getName();
-//      }
-//
       // Use logInfo for deletions as they're more important
       $this->logInfo(
-          'TicketMind Signal: model.deleted',
-          sprintf('Model deleted - Type: %s, Class: %s, ID: %s',
+          sprintf('Signal model.deleted - Type: %s, Class: %s, ID: %s',
               $type,
               get_class($object),
               $data['model_id']
@@ -225,8 +192,7 @@ class TicketMindSignalsPlugin extends \Plugin {
       );
       
       $this->logInfo(
-          'TicketMind Signal Data: model.deleted',
-          json_encode($data, JSON_PRETTY_PRINT)
+          'Signal: model.deleted',
       );
       
       // TODO: Implement model delete logic
