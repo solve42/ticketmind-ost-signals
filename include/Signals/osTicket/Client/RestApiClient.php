@@ -25,7 +25,7 @@ class RestApiClient {
             return false;
         }
 
-        $this->logDebug(json_encode($payload, JSON_PRETTY_PRINT));
+        //$this->logDebug(json_encode($payload, JSON_PRETTY_PRINT));
 
         return $this->sendRequest($payload);
     }
@@ -53,6 +53,7 @@ class RestApiClient {
             if ($httpCode >= 200 && $httpCode < 300) {
                 return true;
             } else {
+                $this->logError('HTTP client response status: ' . $httpCode . " Content: ". $responseContent);
                 return false;
             }
             

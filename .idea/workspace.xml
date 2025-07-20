@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="Fixed and simplified logging. Removed debug logger flag.">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
@@ -14,11 +14,8 @@
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/include/Streamer/osTicket/UseCase/TicketsCreationUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/include/Streamer/osTicket/UseCase/TicketsCreationUseCase.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/Helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/Helper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +111,7 @@
       <workItem from="1752881021242" duration="367000" />
       <workItem from="1752916270109" duration="3395000" />
       <workItem from="1752928924671" duration="8157000" />
-      <workItem from="1753033951380" duration="3142000" />
+      <workItem from="1753033951380" duration="3681000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -164,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752936419967</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fixed and simplified logging. Removed debug logger flag.">
+      <option name="closed" value="true" />
+      <created>1753040934685</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1753040934685</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,6 +181,7 @@
     <MESSAGE value="replaced curl by symphony/http-client" />
     <MESSAGE value="working initial" />
     <MESSAGE value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
+    <MESSAGE value="Fixed and simplified logging. Removed debug logger flag." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed and simplified logging. Removed debug logger flag." />
   </component>
 </project>

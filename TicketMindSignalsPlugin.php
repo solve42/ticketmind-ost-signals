@@ -112,7 +112,7 @@ class TicketMindSignalsPlugin extends \Plugin {
       if (!Helper::includeContent()) {
           $full_data = $extra_data;
       } else {
-          $this->logDebug('Signal: threadentry.created Send with full content' . $entry->getThreadId());
+          $this->logDebug('Signal: threadentry.created Send with full content. Thread Id: ' . $entry->getThreadId());
 
           $content = [
               'type_name' => $entry->getTypeName(),
