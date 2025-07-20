@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="Fixed and simplified logging. Removed debug logger flag.">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="error log in case of status code error">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
@@ -111,7 +111,7 @@
       <workItem from="1752881021242" duration="367000" />
       <workItem from="1752916270109" duration="3395000" />
       <workItem from="1752928924671" duration="8157000" />
-      <workItem from="1753033951380" duration="3681000" />
+      <workItem from="1753033951380" duration="3991000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -169,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753040934685</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="error log in case of status code error">
+      <option name="closed" value="true" />
+      <created>1753041430428</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1753041430428</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,6 +190,7 @@
     <MESSAGE value="working initial" />
     <MESSAGE value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
     <MESSAGE value="Fixed and simplified logging. Removed debug logger flag." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed and simplified logging. Removed debug logger flag." />
+    <MESSAGE value="error log in case of status code error" />
+    <option name="LAST_COMMIT_MESSAGE" value="error log in case of status code error" />
   </component>
 </project>
