@@ -122,10 +122,7 @@ class TicketMindSignalsPlugin extends \Plugin {
               'email_message_id' => $entry->getEmailMessageId(),
               'name' => $entry->getName(),
               'email_header' => $entry->getEmailHeader(),
-              //'poster' => $this->serializeObject($entry->getPoster()), // GDPR relevant
-              'user_id' => $entry->getUserId(), // GDPR relevant
-              //'user' => $this->serializeObject($entry->getUser()), // GDPR relevant
-              //'editor' => $this->serializeObject($entry->getEditor()), // GDPR relevant
+              'user_id' => $entry->getUserId(),
           ];
 
           $full_data = array_merge($extra_data, $content);
@@ -133,7 +130,7 @@ class TicketMindSignalsPlugin extends \Plugin {
 
       $data = [
           'signal' => 'threadentry.created',
-          'ticket_id' => $entry->getId(),
+          'ticket_id' => $entry->getThread()->getObjectId(),
           'created_dt' => $entry->getCreateDate(),
           'extra' => $full_data,
       ];
