@@ -105,8 +105,10 @@ class TicketMindSignalsPlugin extends \Plugin {
           'thread_id' => $entry->getThreadId(),
           'updated_dt' => $entry->getUpdateDate(),
           'source' => $entry->getSource(),
-          'type' => $entry->getTypes(),
+          'type' => $entry->getType(),
           'staff_id' => $entry->getStaffId(),
+          'is_auto_reply' => $entry->isAutoReply(),
+          'user_id' => $entry->getUserId(),
       ];
 
       if (!Helper::includeContent()) {
@@ -115,14 +117,9 @@ class TicketMindSignalsPlugin extends \Plugin {
           $this->logDebug('Signal: threadentry.created Send with full content. Thread Id: ' . $entry->getThreadId());
 
           $content = [
-              'type_name' => $entry->getTypeName(),
+              'name' => $entry->getName(),
               'title' => $entry->getTitle(),
               'body' => $entry->getBody(),
-              'message' => $entry->getMessage(),
-              'email_message_id' => $entry->getEmailMessageId(),
-              'name' => $entry->getName(),
-              'email_header' => $entry->getEmailHeader(),
-              'user_id' => $entry->getUserId(),
           ];
 
           $full_data = array_merge($extra_data, $content);
