@@ -70,6 +70,12 @@ class TicketMindSignalsPlugin extends \Plugin {
           'ticket_number' => $ticket->getNumber(),
           'thread_id' => $ticket->getThreadId(),
           'source' => $ticket->getSource(),
+          'priority_id' => $ticket->getPriorityId(),
+          'priority' => $ticket->getPriority(),
+          'department_id' => $ticket->getDeptId(),
+          'department_name' => $ticket->getDeptName(),
+          'helptopic_id' => $ticket->getTopicId(),
+          'helptopic_label' => $ticket->getHelpTopic(),
       ];
 
       $data = [
