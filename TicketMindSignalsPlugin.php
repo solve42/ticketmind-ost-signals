@@ -106,6 +106,8 @@ class TicketMindSignalsPlugin extends \Plugin {
           return;
       }
 
+      $ticket = $entry->getThread()->getObject();
+
       $extra_data = [
           'id' => $entry->getId(),
           'thread_id' => $entry->getThreadId(),
@@ -115,6 +117,8 @@ class TicketMindSignalsPlugin extends \Plugin {
           'staff_id' => $entry->getStaffId(),
           'is_auto_reply' => $entry->isAutoReply(),
           'user_id' => $entry->getUserId(),
+          'status' => $ticket->getStatus(),
+          'is_answered' => $ticket->getIsAnswered(),
       ];
 
       if (!Helper::includeContent()) {
