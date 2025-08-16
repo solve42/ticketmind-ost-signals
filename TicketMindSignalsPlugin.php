@@ -71,11 +71,12 @@ class TicketMindSignalsPlugin extends \Plugin {
           'thread_id' => $ticket->getThreadId(),
           'source' => $ticket->getSource(),
           'priority_id' => $ticket->getPriorityId(),
-          'priority' => $ticket->getPriority(),
+          'priority_desc' => $ticket->getPriority()->getDesc(),
           'department_id' => $ticket->getDeptId(),
           'department_name' => $ticket->getDeptName(),
           'helptopic_id' => $ticket->getTopicId(),
           'helptopic_label' => $ticket->getHelpTopic(),
+          'subject' => $ticket->cdata->subject,
       ];
 
       $data = [
@@ -117,8 +118,9 @@ class TicketMindSignalsPlugin extends \Plugin {
           'staff_id' => $entry->getStaffId(),
           'is_auto_reply' => $entry->isAutoReply(),
           'user_id' => $entry->getUserId(),
-          'status' => $ticket->getStatus(),
-          'is_answered' => $ticket->getIsAnswered(),
+          'status_id' => $ticket->getStatus()->getId(),
+          'status' => $ticket->getStatus()->getName(),
+          'is_answered' => $ticket->isAnswered(),
       ];
 
       if (!Helper::includeContent()) {

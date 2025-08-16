@@ -53,14 +53,20 @@ class RestApiClient {
             if ($httpCode >= 200 && $httpCode < 300) {
                 return true;
             } else {
+                error_log(
+                    'HTTP client response status: ' . $httpCode . " Content: ". $responseContent
+                    . ". For payload: " . $jsonPayload);
                 $this->logError('HTTP client response status: ' . $httpCode . " Content: ". $responseContent);
                 return false;
             }
             
         } catch (TransportExceptionInterface $e) {
+            error_log(
+                'HTTP client error: ' . $e->getMessage() . ". For payload: " . $jsonPayload);
             $this->logError('HTTP client error: ' . $e->getMessage());
             return false;
         } catch (\Exception $e) {
+            error_log('Unexpected error: ' . $e->getMessage() . ". For payload: " . $jsonPayload);
             $this->logError('Unexpected error: ' . $e->getMessage());
             return false;
         }
