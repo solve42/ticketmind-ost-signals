@@ -5,7 +5,7 @@ namespace TicketMind\Data\Signals\osTicket\Client;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use TicketMind\Data\Signals\osTicket\Configuration\Helper;
+use TicketMind\Data\Signals\osTicket\Configuration\ConfigValues;
 
 class RestApiClient {
 
@@ -14,8 +14,8 @@ class RestApiClient {
     private HttpClientInterface $httpClient;
 
     public function __construct() {
-        $this->queueUrl = Helper::getQueueUrl();
-        $this->apiKey = Helper::getApiKey();
+        $this->queueUrl = ConfigValues::getQueueUrl();
+        $this->apiKey = ConfigValues::getApiKey();
         $this->httpClient = HttpClient::create();
     }
 
@@ -24,8 +24,6 @@ class RestApiClient {
             $this->logError('TicketMind Plugin not configured properly');
             return false;
         }
-
-        //$this->logDebug(json_encode($payload, JSON_PRETTY_PRINT));
 
         return $this->sendRequest($payload);
     }

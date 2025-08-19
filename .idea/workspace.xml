@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="error log in case of status code error">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="expanded logging with additional context; added extra ticket fields">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/bfx-ost-streamer.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/CLAUDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bfx-ost-streamer/include/Streamer/osTicket/UseCase/TicketsCreationUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/../bfx-ost-streamer/include/Streamer/osTicket/UseCase/TicketsCreationUseCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/Helper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read-osticket-logs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/read-osticket-logs.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +33,13 @@
     <execution />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 8.2">
     <include_path>
@@ -79,7 +84,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix/rewrite&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -99,6 +104,9 @@
       </set>
     </attachedChunks>
   </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="PHP" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="" />
@@ -111,7 +119,19 @@
       <workItem from="1752881021242" duration="367000" />
       <workItem from="1752916270109" duration="3395000" />
       <workItem from="1752928924671" duration="8157000" />
-      <workItem from="1753033951380" duration="3991000" />
+      <workItem from="1753033951380" duration="4189000" />
+      <workItem from="1753454488449" duration="928000" />
+      <workItem from="1753455495697" duration="2086000" />
+      <workItem from="1753459467712" duration="627000" />
+      <workItem from="1753563663013" duration="713000" />
+      <workItem from="1753615168051" duration="2228000" />
+      <workItem from="1753644544512" duration="550000" />
+      <workItem from="1753645216582" duration="671000" />
+      <workItem from="1753685669296" duration="753000" />
+      <workItem from="1753686474464" duration="16000" />
+      <workItem from="1753686649213" duration="4323000" />
+      <workItem from="1755350187308" duration="383000" />
+      <workItem from="1755632466164" duration="4794000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -177,7 +197,55 @@
       <option name="project" value="LOCAL" />
       <updated>1753041430428</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="error log in case of status code error">
+      <option name="closed" value="true" />
+      <created>1753041433029</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1753041433029</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed ticket id for threadentry created signal.">
+      <option name="closed" value="true" />
+      <created>1753455172404</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1753455172404</updated>
+    </task>
+    <task id="LOCAL-00011" summary="improved message">
+      <option name="closed" value="true" />
+      <created>1753616669984</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1753616669984</updated>
+    </task>
+    <task id="LOCAL-00012" summary="extra fields">
+      <option name="closed" value="true" />
+      <created>1753686357997</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1753686357997</updated>
+    </task>
+    <task id="LOCAL-00013" summary="status and is_answered fields">
+      <option name="closed" value="true" />
+      <created>1753687526693</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1753687526693</updated>
+    </task>
+    <task id="LOCAL-00014" summary="expanded logging with additional context; added extra ticket fields">
+      <option name="closed" value="true" />
+      <created>1755350435990</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1755350435990</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +259,11 @@
     <MESSAGE value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
     <MESSAGE value="Fixed and simplified logging. Removed debug logger flag." />
     <MESSAGE value="error log in case of status code error" />
-    <option name="LAST_COMMIT_MESSAGE" value="error log in case of status code error" />
+    <MESSAGE value="fixed ticket id for threadentry created signal." />
+    <MESSAGE value="improved message" />
+    <MESSAGE value="extra fields" />
+    <MESSAGE value="status and is_answered fields" />
+    <MESSAGE value="expanded logging with additional context; added extra ticket fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="expanded logging with additional context; added extra ticket fields" />
   </component>
 </project>
