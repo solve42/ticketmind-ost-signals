@@ -4,9 +4,9 @@ require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
-use TicketMind\Data\Signals\osTicket\Client\RestApiClient;
-use TicketMind\Data\Signals\osTicket\Configuration\ConfigValues;
-use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
+use TicketMind\Signals\osTicket\Client\RestApiClient;
+use TicketMind\Signals\osTicket\Configuration\ConfigValues;
+use TicketMind\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
 /**
  * Entry point class to the plugin.

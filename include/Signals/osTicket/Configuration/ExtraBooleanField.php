@@ -1,6 +1,6 @@
 <?php
 
-namespace TicketMind\Data\Signals\osTicket\Configuration;
+namespace TicketMind\Signals\osTicket\Configuration;
 
 require_once(INCLUDE_DIR . 'class.forms.php');
 

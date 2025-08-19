@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="expanded logging with additional context; added extra ticket fields">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="change">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/HasConfigurationManagementTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/Helper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/read-osticket-logs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/read-osticket-logs.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +130,7 @@
       <workItem from="1753686474464" duration="16000" />
       <workItem from="1753686649213" duration="4323000" />
       <workItem from="1755350187308" duration="383000" />
-      <workItem from="1755632466164" duration="4794000" />
+      <workItem from="1755632466164" duration="6027000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -245,11 +244,42 @@
       <option name="project" value="LOCAL" />
       <updated>1755350435990</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="change">
+      <option name="closed" value="true" />
+      <created>1755637365313</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1755637365313</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="fix/rewrite" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
@@ -264,6 +294,7 @@
     <MESSAGE value="extra fields" />
     <MESSAGE value="status and is_answered fields" />
     <MESSAGE value="expanded logging with additional context; added extra ticket fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="expanded logging with additional context; added extra ticket fields" />
+    <MESSAGE value="change" />
+    <option name="LAST_COMMIT_MESSAGE" value="change" />
   </component>
 </project>
