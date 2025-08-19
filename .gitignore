@@ -2,3 +2,5 @@
 .env
 
 composer.phar
+
+.idea/shelf/

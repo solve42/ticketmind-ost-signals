@@ -1,6 +1,6 @@
 <?php
 
-namespace TicketMind\Signals\osTicket\Configuration;
+namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
