@@ -1,11 +1,11 @@
 <?php
 
-namespace TicketMind\Data\Signals\osTicket\Client;
+namespace TicketMind\Signals\osTicket\Client;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use TicketMind\Data\Signals\osTicket\Configuration\ConfigValues;
+use TicketMind\Signals\osTicket\Configuration\ConfigValues;
 
 class RestApiClient {
 
