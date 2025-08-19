@@ -48,51 +48,49 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
         $form = $this->getForm();
         include \TicketMindSignalsPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
     }
-
-    function renderCustomConfig()
-    {
-        $this->renderConfig();
-    }
-
     function saveConfig() {
-        // TODO: Change copypasta
         try {
             $form = $this->getForm();
 
-            if ($form instanceof \Form && $form->isValid() === TRUE) {
-                $errors = [];
-                $values = $form->getClean();
+            if (!($form instanceof \Form) || $form->isValid() !== true) {
+                return false;
+            }
 
-                $has_requirements = \is_array($values) === TRUE
-                    && $this->pre_save($values, $errors) === TRUE
-                    && \count($errors += $form->errors()) === 0;
+            $errors = [];
+            $values = $form->getClean();
 
-                if ($has_requirements) {
-                    $data = [];
+            if (! is_array($values)) {
+                return false;
+            }
+            if (! $this->pre_save($values, $errors)) {
+                return false;
+            }
 
-                    foreach ($values as $name => $value) {
-                        $field = $form->getField($name);
+            // Merge form errors without overwriting existing keys (like `$a + $b`)
+            $formErrors = $form->errors();
+            if (is_array($formErrors)) {
+                $errors = $errors + $formErrors;
+            }
 
-                        if ($field instanceof \FormField) {
-                            try {
-                                $data[$name] = $field->to_database($value);
-                            }
+            if (count($errors) !== 0) {
+                return false;
+            }
 
-                            catch (\FieldUnchanged $ex) {
-                                unset($data[$name]);
-                            }
-                        }
+            $data = [];
+            foreach ($values as $name => $value) {
+                $field = $form->getField($name);
+                if ($field instanceof \FormField) {
+                    try {
+                        $data[$name] = $field->to_database($value);
+                    } catch (\FieldUnchanged $ex) {
+                        unset($data[$name]);
                     }
-
-                    return $this->updateAll($data);
                 }
             }
-        }
 
-        catch (\Throwable $ex) {
+            return $this->updateAll($data);
+        } catch (\Throwable $ex) {
+            return false;
         }
-
-        return FALSE;
     }
-
 }

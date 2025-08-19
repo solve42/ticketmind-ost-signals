@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/lib/autoload.php';
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
 use TicketMind\Data\Signals\osTicket\Client\RestApiClient;
-use TicketMind\Data\Signals\osTicket\Configuration\Helper;
+use TicketMind\Data\Signals\osTicket\Configuration\ConfigValues;
 use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
 /**
@@ -61,7 +61,7 @@ class TicketMindSignalsPlugin extends \Plugin {
   public function onTicketCreated(\Ticket $ticket, &$extra): void {
       $this->logDebug('Signal onTicketCreated');
 
-      if (!Helper::isForwardingEnabled()) {
+      if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $ticket->getThreadId());
           return;
       }
@@ -102,7 +102,7 @@ class TicketMindSignalsPlugin extends \Plugin {
   public function onThreadEntryCreated(\ThreadEntry $entry): void {
       $this->logDebug('Signal Called onThreadEntryCreated');
 
-      if (!Helper::isForwardingEnabled()) {
+      if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
           return;
       }
@@ -123,7 +123,7 @@ class TicketMindSignalsPlugin extends \Plugin {
           'is_answered' => $ticket->isAnswered(),
       ];
 
-      if (!Helper::includeContent()) {
+      if (!ConfigValues::includeContent()) {
           $full_data = $extra_data;
       } else {
           $this->logDebug('Signal: threadentry.created Send with full content. Thread Id: ' . $entry->getThreadId());
