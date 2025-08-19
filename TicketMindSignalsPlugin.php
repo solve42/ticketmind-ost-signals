@@ -4,9 +4,9 @@ require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
-use TicketMind\Signals\osTicket\Client\RestApiClient;
-use TicketMind\Signals\osTicket\Configuration\ConfigValues;
-use TicketMind\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
+use TicketMind\Plugin\Signals\osTicket\Client\RestApiClient;
+use TicketMind\Plugin\Signals\osTicket\Configuration\ConfigValues;
+use TicketMind\Plugin\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
 /**
  * Entry point class to the plugin.
@@ -52,8 +52,6 @@ class TicketMindSignalsPlugin extends \Plugin {
       
       \Signal::connect('ticket.created',[$this, 'onTicketCreated']);
       \Signal::connect('threadentry.created', [$this, 'onThreadEntryCreated']);
-      //\Signal::connect('model.updated', [$this, 'updateModel']);
-      //\Signal::connect('model.deleted', [$this, 'deleteModel']);
 
       error_log('TicketMind OST Signals Connected!');
   }

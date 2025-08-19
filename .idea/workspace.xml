@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="change">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />

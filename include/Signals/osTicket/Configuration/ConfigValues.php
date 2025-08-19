@@ -1,6 +1,6 @@
 <?php
 
-namespace TicketMind\Signals\osTicket\Configuration;
+namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 
 class ConfigValues {
     const QUEUE_URL = 'queue_url';
