@@ -1,0 +1,35 @@
+name: gitleaks (public-ready)
+
+# Disabled by default: manual runs only
+on:
+  workflow_dispatch: {}
+  # To enable after open-sourcing, uncomment:
+  # push:
+  #   branches: ["**"]
+  # pull_request:
+  #   branches: ["**"]
+
+permissions:
+  contents: read
+  security-events: write   # required for uploading SARIF to Code scanning
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: Run Gitleaks
+        id: gitleaks
+        uses: gacts/gitleaks@v1
+        with:
+          version: latest
+          config-path: .github/.gitleaks.toml
+
+      # Show results in repo’s Code scanning (free for public repos)
+      - name: Upload SARIF to Code scanning
+        if: ${{ steps.gitleaks.outputs.sarif }}
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.gitleaks.outputs.sarif }}
