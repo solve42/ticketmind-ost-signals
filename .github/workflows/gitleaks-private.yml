@@ -1,0 +1,40 @@
+name: gitleaks (private)
+
+on:
+  push:            # every commit
+    branches: ["**"]
+  pull_request:    # every PR update
+    branches: ["**"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gitleaks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for Gitleaks)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for full-history scans
+
+      - name: Run Gitleaks
+        id: gitleaks
+        uses: gacts/gitleaks@v1
+        with:
+          version: latest
+          config-path: .github/.gitleaks.toml
+
+      # Keep the SARIF report as an artifact (handy in private repos)
+      - name: Upload Gitleaks SARIF artifact
+        if: ${{ always() && steps.gitleaks.outputs.sarif }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-sarif
+          path: ${{ steps.gitleaks.outputs.sarif }}
+          retention-days: 14

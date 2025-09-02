@@ -1,0 +1,46 @@
+title = "Gitleaks config for osTicket plugin (PHP)"
+
+[extend]
+# Keep Gitleaks' default rule set, then add our tweaks below.
+useDefault = true
+
+# Global allowlist to reduce noise from deps/binaries. Customize as needed.
+[allowlist]
+description = "Ignore dependency dirs and common binary blobs"
+paths = [
+  '''(^|/)vendor/''',
+  '''(^|/)node_modules/''',
+  '''(^|/)\.git/''',
+  '''\.min\.js$''',
+  '''\.map$''',
+  '''\.(png|jpe?g|gif|bmp|ico|svg|pdf|zip|gz|tar)$'''
+]
+# Ignore obvious placeholder secrets (adjust to your conventions).
+regexes = [
+  '''(?i)(your_|example_|sample_|changeme)[\w-]*'''
+]
+
+# --- Custom rules useful for PHP/osTicket style code -------------------------
+
+[[rules]]
+id = "basic-auth-in-url"
+description = "Credentials embedded in HTTP URL (basic auth)"
+regex = '''(?i)https?:\/\/[a-z0-9._%+-]+:[^@\s]{3,}@[^\/\s]+'''
+secretGroup = 0
+keywords = ["http", "https", "@"]
+
+[[rules]]
+id = "php-client-secret-array"
+description = "PHP array-style client_secret assignment"
+path = '''\.php$'''
+regex = '''(?i)['"]client_secret['"]\s*=>\s*['"]([a-z0-9=_\-]{8,})['"]'''
+secretGroup = 1
+keywords = ["client_secret","php"]
+
+[[rules]]
+id = "dotenv-url-with-creds"
+description = "URL with credentials inside .env-like files"
+path = '''(?i)\.env(\.example)?$'''
+regex = '''(?i)^[A-Z0-9_]+=(?:["'])?https?:\/\/[a-z0-9._%+-]+:[^@\s]{3,}@'''
+secretGroup = 0
+keywords = ["env","url","http","https"]
