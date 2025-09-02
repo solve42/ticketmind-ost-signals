@@ -2,3 +2,7 @@
 .env
 
 composer.phar
+CLAUDE.md
+scripts/
+
+.idea/shelf
