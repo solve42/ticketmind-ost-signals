@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="licenses">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="error log in case of status code error">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,21 +26,8 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="GitHub Workflow" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 8.2">
     <include_path>
@@ -79,35 +67,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHELLCHECK.PATH": "/home/eugen/.local/share/JetBrains/PhpStorm2025.2/Shell Script/shellcheck",
-    "git-widget-placeholder": "fix/rewrite",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.webide.settings.project.settings.php&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PS-252.23892.419" />
-        <option value="bundled-php-predefined-a98d8de5180a-c72577f2c82f-com.jetbrains.php.sharedIndexes-PS-252.23892.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PS-251.26927.60" />
+        <option value="bundled-php-predefined-a98d8de5180a-e5747d4f5a45-com.jetbrains.php.sharedIndexes-PS-251.26927.60" />
       </set>
     </attachedChunks>
-  </component>
-  <component name="StructureViewState">
-    <option name="selectedTab" value="PHP" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -121,21 +104,7 @@
       <workItem from="1752881021242" duration="367000" />
       <workItem from="1752916270109" duration="3395000" />
       <workItem from="1752928924671" duration="8157000" />
-      <workItem from="1753033951380" duration="4189000" />
-      <workItem from="1753454488449" duration="928000" />
-      <workItem from="1753455495697" duration="2086000" />
-      <workItem from="1753459467712" duration="627000" />
-      <workItem from="1753563663013" duration="713000" />
-      <workItem from="1753615168051" duration="2228000" />
-      <workItem from="1753644544512" duration="550000" />
-      <workItem from="1753645216582" duration="671000" />
-      <workItem from="1753685669296" duration="753000" />
-      <workItem from="1753686474464" duration="16000" />
-      <workItem from="1753686649213" duration="4323000" />
-      <workItem from="1755350187308" duration="383000" />
-      <workItem from="1755632466164" duration="6027000" />
-      <workItem from="1756812697473" duration="6351000" />
-      <workItem from="1756820071967" duration="10909000" />
+      <workItem from="1753033951380" duration="3991000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -201,138 +170,11 @@
       <option name="project" value="LOCAL" />
       <updated>1753041430428</updated>
     </task>
-    <task id="LOCAL-00009" summary="error log in case of status code error">
-      <option name="closed" value="true" />
-      <created>1753041433029</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1753041433029</updated>
-    </task>
-    <task id="LOCAL-00010" summary="fixed ticket id for threadentry created signal.">
-      <option name="closed" value="true" />
-      <created>1753455172404</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1753455172404</updated>
-    </task>
-    <task id="LOCAL-00011" summary="improved message">
-      <option name="closed" value="true" />
-      <created>1753616669984</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1753616669984</updated>
-    </task>
-    <task id="LOCAL-00012" summary="extra fields">
-      <option name="closed" value="true" />
-      <created>1753686357997</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1753686357997</updated>
-    </task>
-    <task id="LOCAL-00013" summary="status and is_answered fields">
-      <option name="closed" value="true" />
-      <created>1753687526693</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1753687526693</updated>
-    </task>
-    <task id="LOCAL-00014" summary="expanded logging with additional context; added extra ticket fields">
-      <option name="closed" value="true" />
-      <created>1755350435990</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1755350435990</updated>
-    </task>
-    <task id="LOCAL-00015" summary="change">
-      <option name="closed" value="true" />
-      <created>1755637365313</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1755637365313</updated>
-    </task>
-    <task id="LOCAL-00016" summary="fixed">
-      <option name="closed" value="true" />
-      <created>1755640009967</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1755640009967</updated>
-    </task>
-    <task id="LOCAL-00017" summary="license header (gpl-2 only)">
-      <option name="closed" value="true" />
-      <created>1756814922080</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1756814922080</updated>
-    </task>
-    <task id="LOCAL-00018" summary="improved claude file">
-      <option name="closed" value="true" />
-      <created>1756817900161</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1756817900161</updated>
-    </task>
-    <task id="LOCAL-00019" summary="readme">
-      <option name="closed" value="true" />
-      <created>1756821386853</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1756821386853</updated>
-    </task>
-    <task id="LOCAL-00020" summary="gitleaks">
-      <option name="closed" value="true" />
-      <created>1756827090372</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1756827090372</updated>
-    </task>
-    <task id="LOCAL-00021" summary="licenses">
-      <option name="closed" value="true" />
-      <created>1756830117456</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1756830117456</updated>
-    </task>
-    <option name="localTasksCounter" value="22" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="fix/rewrite" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
@@ -342,18 +184,6 @@
     <MESSAGE value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
     <MESSAGE value="Fixed and simplified logging. Removed debug logger flag." />
     <MESSAGE value="error log in case of status code error" />
-    <MESSAGE value="fixed ticket id for threadentry created signal." />
-    <MESSAGE value="improved message" />
-    <MESSAGE value="extra fields" />
-    <MESSAGE value="status and is_answered fields" />
-    <MESSAGE value="expanded logging with additional context; added extra ticket fields" />
-    <MESSAGE value="change" />
-    <MESSAGE value="fixed" />
-    <MESSAGE value="license header (gpl-2 only)" />
-    <MESSAGE value="improved claude file" />
-    <MESSAGE value="readme" />
-    <MESSAGE value="gitleaks" />
-    <MESSAGE value="licenses" />
-    <option name="LAST_COMMIT_MESSAGE" value="licenses" />
+    <option name="LAST_COMMIT_MESSAGE" value="error log in case of status code error" />
   </component>
 </project>
