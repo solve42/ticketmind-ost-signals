@@ -7,24 +7,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an osTicket plugin for TicketMind integration that forwards tickets to a queue system. The plugin is built using
 PHP and follows osTicket's plugin architecture.
 
-## Reference Implementation
-
-The `@../bfx-ost-streamer` directory contains a mature reference implementation of an osTicket streaming plugin that demonstrates:
-- Complete factory pattern implementation for all components (Stream, Record, Serializer, Encoder, Tuple, UseCase)
-- Signal-based extensibility system for runtime configuration
-- Comprehensive validation framework
-- Multi-format data streaming (JSON, CSV, Line-delimited JSON)
-- Multiple encoding options (Base64, Hex, UTF-8)
-- Production-ready error handling and logging
-
-Study this implementation for architectural patterns and best practices when implementing the TicketMind integration.
+**License**: GPL-2.0-only (GNU General Public License v2.0)
 
 ## Technology Stack
 
-- **PHP**: >= 7.1 (with ext-json, ext-filter, ext-mbstring)
+- **PHP**: >= 8.2 (with ext-json, ext-filter, ext-mbstring)
 - **Framework**: osTicket plugin framework (v1.10+) for a documentation see @./../osTicket/AI_DOCUMENTATION.md
 - **Dependency Management**: Composer (custom vendor directory: `lib/`)
-- **Namespace**: `TicketMind\Data\` (PSR-4 autoloading from `include/` directory)
+- **HTTP Client**: Symfony HttpClient (v6.0|v7.0)
+- **Namespace**: `TicketMind\Plugin\` (PSR-4 autoloading from `include/` directory)
 
 ## Architecture
 
@@ -33,35 +24,30 @@ The plugin follows osTicket's standard plugin structure:
 1. **plugin.php**: Plugin metadata and configuration
 2. **TicketMindSignalsPlugin.php**: Main plugin class extending osTicket's `Plugin` class
     - Single-instance plugin (`isMultiInstance() = FALSE`)
-    - Bootstrap method contains commented UseCase factory pattern (not yet implemented)
+    - Bootstrap method connects to osTicket signals (`ticket.created`, `threadentry.created`)
     - Custom enable() method that modifies plugin name in database
+    - Implements signal handlers for forwarding ticket data to TicketMind API
 
-### Architectural Patterns (from Reference Implementation)
+### Current Implementation
 
-The reference implementation demonstrates several key patterns that should be followed:
+The plugin currently implements a simpler architecture focused on forwarding ticket signals to TicketMind:
 
-1. **Factory Pattern**: All components use factories extending `AbstractFactory`
-   - StreamFactory, RecordFactory, SerializerFactory, EncoderFactory, TupleFactory, UseCaseFactory
-   
-2. **Data Pipeline Architecture**:
-   ```
-   osTicket Event → UseCase → Tuple → Serializer → Encoder → Record → Stream → External System
-   ```
+1. **Core Components**:
+   - `RestApiClient` - Handles HTTP communication with TicketMind API using Symfony HttpClient
+   - `ConfigValues` - Provides access to plugin configuration values
+   - `TicketMindSignalsPluginConfig` - Manages plugin configuration form with custom fields
+   - `ExtraBooleanField` - Custom boolean field implementation for configuration
 
-3. **Signal/Action System**: Extensibility through osTicket signals
-   - Format signals: `ticketmind.data.stream.format.<component>`
-   - Option signals: `ticketmind.data.stream.option.<component>`
-   - Use case signals: `ticketmind.data.stream.use_case`
+2. **Signal Handlers**:
+   - `onTicketCreated` - Forwards new ticket data to TicketMind
+   - `onThreadEntryCreated` - Forwards thread entry (replies/notes) to TicketMind
 
-4. **Interface-Driven Design**: Core interfaces to implement:
-   - `ActionInterface`: Event-driven actions
-   - `StreamInterface`: Stream implementations
-   - `RecordInterface`: Data records
-   - `SerializerInterface`: Data serialization
-   - `EncoderInterface`: Data encoding
-   - `TupleInterface`: Data collection
-   - `UseCaseInterface`: Business logic
-   - `ValidatorInterface`: Input validation
+3. **Configuration Options**:
+   - `queue_url` - TicketMind Host URL
+   - `api_key` - API key for authentication (PasswordField)
+   - `with_content` - Include ticket content in messages (ExtraBooleanField)
+   - `forward_enabled` - Enable/disable forwarding (ExtraBooleanField)
+
 
 ## Development Commands
 
@@ -82,7 +68,7 @@ php composer.phar dump-autoload
 ## Important Development Notes
 
 1. **Custom Vendor Directory**: Dependencies are installed in `lib/` instead of the default `vendor/` directory
-2. **Autoloading**: The plugin uses Composer autoloading with PSR-4 for the `TicketMind\Data\` namespace
+2. **Autoloading**: The plugin uses Composer autoloading with PSR-4 for the `TicketMind\Plugin\` namespace
 3. **Plugin ID**: `ticketmind:ost:signals` - this is used by osTicket to identify the plugin
 4. **Database Modifications**: The plugin modifies its name in the database by prepending "__" when enabled
 
@@ -92,39 +78,15 @@ When developing features:
 
 - Extend osTicket's base classes and follow their patterns
 - Use osTicket's database abstraction layer (`db_query`, `db_input`, etc.)
-- Follow osTicket's configuration patterns for plugin settings:
-          It looks the following:
+- Follow osTicket's configuration patterns for plugin settings. See `TicketMindSignalsPluginConfig.php` for the actual implementation example which extends `PluginConfig` and implements `PluginCustomConfig`
 
-          ```php
-           <?php
-           require_once INCLUDE_DIR . 'class.plugin.php';
-       
-           class YourPluginConfig extends PluginConfig {
-               function getOptions() {
-                   list($__, $_N) = self::translate();
-          
-                   return array(
-                       'section' => new SectionBreakField(array(
-                           'label' => $__('Plugin Settings'),
-                       )),
-                       'your-setting' => new TextboxField(array(
-                           'label' => $__('Your Setting'),
-                           'configuration' => array(
-                               'size' => 60,
-                               'length' => 100,
-                           ),
-                       )),
-                   );
-               }
-           }
-           ```
+### Field Types Used in This Plugin
+- `TextboxField`: Single-line text input (used for TicketMind Host URL)
+- `PasswordField`: Password input field (used for API keys)
+- `ExtraBooleanField`: Custom boolean field with NULL default (plugin-specific implementation for toggles)
+- `SectionBreakField`: Visual separator in the form
 
-          Following field types are available (see file: osTicket/include/class.forms.php)
-            - `TextboxField`: Single-line text input.
-            - `TextareaField`: Multi-line text input.
-            - `BooleanField`: Checkbox for true/false values.
-            - `ChoiceField`: Dropdown selection.
-            - `SectionBreakField`: Visual separator in the form.
+Note: Additional field types like `TextareaField`, `ChoiceField`, and `BooleanField` are available in osTicket but not currently used in this plugin.
 
 ## Testing
 
