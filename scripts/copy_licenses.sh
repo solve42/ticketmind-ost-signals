@@ -5,7 +5,6 @@
 #   bash scripts/copy_licenses.sh path/to/lib path/to/dest
 #   DRY_RUN=1 bash scripts/copy_licenses.sh          # show what would happen
 
-
 set -euo pipefail
 
 SRC_DIR="${1:-lib}"
@@ -83,7 +82,7 @@ for src in "${LICENSE_FILES[@]}"; do
   # Manifest entry
   if [[ "$DRY_RUN" != "1" ]]; then
     # Compute sha256
-    sha=$((hash_cmd) < "$src" | awk '{print $1}')
+    sha=$( (hash_cmd) < "$src" | awk '{print $1}')
     # First line preview (safe for tabs)
     first_line="$(head -n 1 "$src" | tr '\t' ' ' | tr -d '\r')"
     printf "%s\t%s\t%s\t%s\n" "$src" "$dst" "$sha" "$first_line" >> "$MANIFEST"

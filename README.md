@@ -1,5 +1,9 @@
 # TicketMind osTicket Signals Plugin - Installation Guide
 
+provided by Solve42 GmbH.
+
+Product page: https://ticketmind.de
+
 ## Overview
 The TicketMind osTicket Signals Plugin forwards ticket creation and thread entry events from osTicket to the TicketMind API for processing and analytics.
 
@@ -270,6 +274,7 @@ rm -f /path/to/osticket/include/plugins/.registry
 ### 5. Verify Configuration
 - Check plugin settings remain intact
 - Test with a new ticket
+- Check audit logs for any errors
 
 ## Uninstallation
 
@@ -305,14 +310,12 @@ DELETE FROM ost_config WHERE namespace LIKE 'ticketmind%';
    - Protect configuration files containing sensitive data
 
 3. **Network Security**
-   - Whitelist TicketMind API endpoints in firewall rules
-   - Use TLS 1.2 or higher for API connections
+   - Whitelist outbound connection to TicketMind API endpoints in firewall rules
 
 ## Support
 
 ### Getting Help
 - **GitHub Issues**: https://github.com/solve42/ticketmind-ost-signals/issues
-- **Documentation**: Check CLAUDE.md for development details
 - **Logs**: Always check system and error logs first
 
 ### Reporting Issues
@@ -325,7 +328,3 @@ When reporting issues, please include:
 
 ## License
 This plugin is licensed under GPL-2.0-only. See LICENSE file for details.
-
-## Authors
-- Solve42 GmbH Team
-- Contact: info@solve42.de
