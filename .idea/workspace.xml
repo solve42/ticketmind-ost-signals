@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="change">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="fixed">
       <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ticketmind-ost-signals.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE.TXT" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/TicketMindSignalsPlugin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Client/RestApiClient.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ConfigValues.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/ExtraBooleanField.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration-form.tmpl.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,8 +98,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PS-251.26927.60" />
-        <option value="bundled-php-predefined-a98d8de5180a-e5747d4f5a45-com.jetbrains.php.sharedIndexes-PS-251.26927.60" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PS-252.23892.419" />
+        <option value="bundled-php-predefined-a98d8de5180a-c72577f2c82f-com.jetbrains.php.sharedIndexes-PS-252.23892.419" />
       </set>
     </attachedChunks>
   </component>
@@ -132,6 +131,7 @@
       <workItem from="1753686649213" duration="4323000" />
       <workItem from="1755350187308" duration="383000" />
       <workItem from="1755632466164" duration="6027000" />
+      <workItem from="1756812697473" duration="2041000" />
     </task>
     <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
       <option name="closed" value="true" />
@@ -253,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755637365313</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fixed">
+      <option name="closed" value="true" />
+      <created>1755640009967</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1755640009967</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,6 +304,7 @@
     <MESSAGE value="status and is_answered fields" />
     <MESSAGE value="expanded logging with additional context; added extra ticket fields" />
     <MESSAGE value="change" />
-    <option name="LAST_COMMIT_MESSAGE" value="change" />
+    <MESSAGE value="fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed" />
   </component>
 </project>
