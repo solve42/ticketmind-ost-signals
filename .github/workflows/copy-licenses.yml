@@ -2,6 +2,8 @@ name: Sync third-party licenses
 
 on:
   push:
+    branches-ignore:
+      - main           # don't run on pushes to main
     paths:
       - 'composer.json'
       - 'composer.lock'
@@ -18,6 +20,8 @@ concurrency:
 
 jobs:
   sync:
+    # Prevent manual runs on main too
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
