@@ -1,0 +1,8 @@
+source_abs_path	dest_abs_path	sha256	license_first_line
+lib/composer/LICENSE	vendor/third_party_licenses/composer/LICENSE	c8cce4b6b9729f264ffdf9296d505d63432497feeed1f586d1902b942197e024	
+lib/psr/container/LICENSE	vendor/third_party_licenses/psr/container/LICENSE	0688ee39285c33067ad77d82349cdacb5569756bea4398b34bb223af9e57f1c0	The MIT License (MIT)
+lib/psr/log/LICENSE	vendor/third_party_licenses/psr/log/LICENSE	6e944907067bae93c00a9f2ad51032243820b22df34b77c77690d46cb2e98e24	Copyright (c) 2012 PHP Framework Interoperability Group
+lib/symfony/deprecation-contracts/LICENSE	vendor/third_party_licenses/symfony/deprecation-contracts/LICENSE	b92809182501f0fa422167ea44484b41877e1736e8283d0377fdc9664bb9a02d	Copyright (c) 2020-present Fabien Potencier
+lib/symfony/http-client-contracts/LICENSE	vendor/third_party_licenses/symfony/http-client-contracts/LICENSE	375396ec5755e9c27dd9c513c0eb4c2923881aba98b941f156e92ed6ec1cfa19	Copyright (c) 2018-present Fabien Potencier
+lib/symfony/http-client/LICENSE	vendor/third_party_licenses/symfony/http-client/LICENSE	375396ec5755e9c27dd9c513c0eb4c2923881aba98b941f156e92ed6ec1cfa19	Copyright (c) 2018-present Fabien Potencier
+lib/symfony/service-contracts/LICENSE	vendor/third_party_licenses/symfony/service-contracts/LICENSE	375396ec5755e9c27dd9c513c0eb4c2923881aba98b941f156e92ed6ec1cfa19	Copyright (c) 2018-present Fabien Potencier

@@ -1,0 +1,69 @@
+name: Sync third-party licenses
+
+on:
+  push:
+    branches-ignore:
+      - main           # don't run on pushes to main
+    paths:
+      - 'composer.json'
+      - 'composer.lock'
+      - 'scripts/copy_licenses.sh'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write  # needed to push commits
+
+concurrency:
+  group: copy-licenses-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  sync:
+    # Prevent manual runs on main too
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Setup PHP & Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install production dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist --no-ansi --no-dev
+
+      - name: Collect licenses
+        shell: bash
+        run: |
+          chmod +x scripts/copy_licenses.sh
+          bash scripts/copy_licenses.sh
+
+      - name: Detect changes in vendor/third_party_licenses
+        id: diff
+        shell: bash
+        run: |
+          if [[ -n "$(git status --porcelain vendor/third_party_licenses)" ]]; then
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+            echo "Changed files:"
+            git status --porcelain vendor/third_party_licenses
+          else
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.diff.outputs.changes == 'true' && github.event_name == 'push'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git add vendor/third_party_licenses
+          git commit -m "chore(licenses): sync third-party license files [skip ci]"
+          git push origin "HEAD:${{ github.ref_name }}"
