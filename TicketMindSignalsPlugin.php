@@ -1,12 +1,31 @@
 <?php
-
+/**
+ * TicketMind Signals Plugin — TicketMind API Client
+ * Copyright (C) 2025  Solve42 GmbH
+ * Author: Eugen Massini <info@solve42.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  SPDX-License-Identifier: GPL-2.0-only
+ */
 require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 
-use TicketMind\Data\Signals\osTicket\Client\RestApiClient;
-use TicketMind\Data\Signals\osTicket\Configuration\Helper;
-use TicketMind\Data\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
+use TicketMind\Plugin\Signals\osTicket\Client\RestApiClient;
+use TicketMind\Plugin\Signals\osTicket\Configuration\ConfigValues;
+use TicketMind\Plugin\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
 /**
  * Entry point class to the plugin.
@@ -52,8 +71,6 @@ class TicketMindSignalsPlugin extends \Plugin {
       
       \Signal::connect('ticket.created',[$this, 'onTicketCreated']);
       \Signal::connect('threadentry.created', [$this, 'onThreadEntryCreated']);
-      //\Signal::connect('model.updated', [$this, 'updateModel']);
-      //\Signal::connect('model.deleted', [$this, 'deleteModel']);
 
       error_log('TicketMind OST Signals Connected!');
   }
@@ -61,7 +78,7 @@ class TicketMindSignalsPlugin extends \Plugin {
   public function onTicketCreated(\Ticket $ticket, &$extra): void {
       $this->logDebug('Signal onTicketCreated');
 
-      if (!Helper::isForwardingEnabled()) {
+      if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $ticket->getThreadId());
           return;
       }
@@ -102,7 +119,7 @@ class TicketMindSignalsPlugin extends \Plugin {
   public function onThreadEntryCreated(\ThreadEntry $entry): void {
       $this->logDebug('Signal Called onThreadEntryCreated');
 
-      if (!Helper::isForwardingEnabled()) {
+      if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
           return;
       }
@@ -123,7 +140,7 @@ class TicketMindSignalsPlugin extends \Plugin {
           'is_answered' => $ticket->isAnswered(),
       ];
 
-      if (!Helper::includeContent()) {
+      if (!ConfigValues::includeContent()) {
           $full_data = $extra_data;
       } else {
           $this->logDebug('Signal: threadentry.created Send with full content. Thread Id: ' . $entry->getThreadId());

@@ -1,0 +1,142 @@
+name: Plugin Release
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to release (e.g., 1.2.3)"
+        required: true
+      allow_non_main:
+        description: "Allow releasing if the tag is NOT on main"
+        required: false
+        default: "false"
+
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to create the Release and upload assets
+
+    steps:
+      - name: Checkout Repo & Tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+
+      - name: Resolve tag and verify it’s on main
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="${{ github.event.inputs.tag }}"
+          fi
+
+          # Ensure the tag exists locally
+          if ! git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            git fetch --tags --force
+            git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null
+          fi
+
+          # Verify tag commit is reachable from main unless overridden
+          git fetch origin main --prune --depth=1
+          COMMIT="$(git rev-list -n 1 "${TAG}")"
+          if ! git merge-base --is-ancestor "${COMMIT}" origin/main; then
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.allow_non_main }}" == "true" ]]; then
+              echo "Tag ${TAG} is not on main — continuing due to override."
+            else
+              echo "Tag ${TAG} is not on main. Refusing to release." >&2
+              exit 1
+            fi
+          fi
+
+          # Derive version string (strip common prefixes like v or release-)
+          VERSION="${TAG}"
+          VERSION="${VERSION#v}"; VERSION="${VERSION#V}"
+          VERSION="${VERSION#release-}"; VERSION="${VERSION#release/}"
+
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          ZIP_NAME="${REPO_NAME}-${TAG}.zip"
+
+          {
+            echo "TAG_NAME=${TAG}"
+            echo "VERSION=${VERSION}"
+            echo "ZIP_NAME=${ZIP_NAME}"
+          } >> "$GITHUB_ENV"
+
+      - name: Check out the tag contents
+        run: git checkout "tags/${TAG_NAME}" --force
+
+      - name: Update version in plugin.php → ${{ env.VERSION }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f plugin.php ]]; then
+            echo "plugin.php not found in repo root. Adjust the workflow if it's elsewhere." >&2
+            exit 1
+          fi
+          cat > .update_version.php <<'PHP'
+          <?php
+          $file = 'plugin.php';
+          $version = getenv('VERSION');
+          if (!file_exists($file)) { fwrite(STDERR, "plugin.php not found\n"); exit(1); }
+          $code = file_get_contents($file);
+
+          // 1) "'version' => '...'"
+          $count1 = 0;
+          $code = preg_replace("/(['\"]version['\"]\s*=>\s*['\"])([^'\"]+)(['\"])/i", "\\1{$version}\\3", $code, -1, $count1);
+
+          // 2) "$version = '...';"
+          $count2 = 0;
+          $code = preg_replace("/(\$version\s*=\s*['\"])([^'\"]+)(['\"]\s*;)/i", "\\1{$version}\\3", $code, -1, $count2);
+
+          file_put_contents($file, $code);
+          echo "Updated plugin.php (array matches: $count1, var matches: $count2)\n";
+          PHP
+          php .update_version.php
+          rm .update_version.php
+
+      - name: Build filtered zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f "${ZIP_NAME}"
+          # Exclude CI/config/docs/tests/etc. Add/remove globs to taste.
+          zip -r "${ZIP_NAME}" . \
+            -x ".git/*" \
+               ".github/*" "*/.github/*" \
+               ".claude*" "*/.claude*" \
+               ".vscode/*" "*/.vscode/*" \
+               ".idea/*" "*/.idea/*" \
+               "tests/*" "*/tests/*" \
+               "docs/*" "*/docs/*" \
+               "CLAUDE.md" \
+               "composer.*" \
+               ".DS_Store" "*/.DS_Store"
+          ls -lah "${ZIP_NAME}"
+
+      - name: Create GitHub Release (tag push)
+        if: ${{ github.event_name == 'push' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_NAME }}
+          generate_release_notes: true
+
+      - name: Create/Update GitHub Release (manual)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          name: Release ${{ github.event.inputs.tag }}
+          files: ${{ env.ZIP_NAME }}
+          generate_release_notes: true

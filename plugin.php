@@ -1,34 +1,32 @@
 <?php
-
 /**
- * This file is part of bfx-ost-streamer.
+ * TicketMind Signals Plugin — TicketMind API Client
+ * Copyright (C) 2025  Solve42 GmbH
+ * Author: Eugen Massini <info@solve42.de>
  *
- * Copyright (C) 2021-2025 Davide Scola <davide@bitfinex.com>,
- *                         Nicoletta Maia <nicoletta@bitfinex.com>.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
  *
- * Licensed under the Apache License,  Version 2.0 (the "License"); you may
- * not use this file except in  compliance with the License. You may obtain
- * a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * Unless  required by  applicable law  or agreed  to in  writing, software
- * distributed  under the  License  is  distributed on  an  "AS IS"  BASIS,
- * WITHOUT  WARRANTIES  OR  CONDITIONS  OF  ANY  KIND,  either  express  or
- * implied. See the License for the specific language governing permissions
- * and limitations under the License.
+ *  SPDX-License-Identifier: GPL-2.0-only
  */
 
-/**
- * The bfx-ost-streamer plugin configuration.
- */
 return [
-  'id' => /* notrans */ 'ticketmind:ost:signals',
+  'id' => 'ticketmind:ost:signals',
   'version' => '0.0.1',
   'ost_version' => '1.10',
-  'name' => /* trans */ 'TicketMind osTicket Signals',
+  'name' => 'TicketMind osTicket Signals',
   'author' => 'Solve42 GmbH',
-  'description' => /* trans */ 'Forwarding tickets to queue.',
+  'description' => 'Plugin to forward ticket created and thread entry created signals from osTickets to TicketMind',
   'url' => 'https://github.com/solve42/ticketmind-ost-signals',
   'plugin' => 'TicketMindSignalsPlugin.php:TicketMindSignalsPlugin',
 ];

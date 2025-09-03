@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="error log in case of status code error">
+      <change afterPath="$PROJECT_DIR$/../osTicket/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/plugin-release.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/../osTicket/include/mpdf/composer.json" />
+      <option value="$PROJECT_DIR$/../bfx-ost-streamer/composer.json" />
+      <option value="$PROJECT_DIR$/../osTicket/include/laminas-mail/composer.json" />
+    </option>
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="GitHub Workflow" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 8.2">
+    <include_path>
+      <path value="$PROJECT_DIR$/lib/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/../osTicket/include/mpdf/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-stdlib" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/composer" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-servicemanager" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-loader" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-validator" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/laminas/laminas-mime" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/../osTicket/include/laminas-mail/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/lib/symfony/http-client" />
+      <path value="$PROJECT_DIR$/lib/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/lib/psr/container" />
+      <path value="$PROJECT_DIR$/lib/psr/log" />
+    </include_path>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="303cyrEuJNfJI6kI1GrA9eIMaIU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "fix/rewrite",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/eugen/projects/TicketMind/ticketmind-ost-signals/lib",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PS-252.23892.419" />
+        <option value="bundled-php-predefined-a98d8de5180a-c72577f2c82f-com.jetbrains.php.sharedIndexes-PS-252.23892.419" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="148de6fd-1983-42ba-8acc-eef83db9afc3" name="Changes" comment="" />
+      <created>1752859954165</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1752859954165</updated>
+      <workItem from="1752859956013" duration="2237000" />
+      <workItem from="1752870142495" duration="6447000" />
+      <workItem from="1752881021242" duration="367000" />
+      <workItem from="1752916270109" duration="3395000" />
+      <workItem from="1752928924671" duration="8157000" />
+      <workItem from="1753033951380" duration="3991000" />
+      <workItem from="1756842575130" duration="4339000" />
+    </task>
+    <task id="LOCAL-00001" summary="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin.">
+      <option name="closed" value="true" />
+      <created>1752872987273</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752872987273</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed Password field">
+      <option name="closed" value="true" />
+      <created>1752924638931</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752924638931</updated>
+    </task>
+    <task id="LOCAL-00003" summary="replaced curl by symphony/http-client">
+      <option name="closed" value="true" />
+      <created>1752925586058</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752925586058</updated>
+    </task>
+    <task id="LOCAL-00004" summary="working initial">
+      <option name="closed" value="true" />
+      <created>1752933105245</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752933105245</updated>
+    </task>
+    <task id="LOCAL-00005" summary="working initial">
+      <option name="closed" value="true" />
+      <created>1752933131991</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752933131991</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging">
+      <option name="closed" value="true" />
+      <created>1752936419967</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1752936419967</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed and simplified logging. Removed debug logger flag.">
+      <option name="closed" value="true" />
+      <created>1753040934685</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1753040934685</updated>
+    </task>
+    <task id="LOCAL-00008" summary="error log in case of status code error">
+      <option name="closed" value="true" />
+      <created>1753041430428</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1753041430428</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ADD configuration and client setup for ticket forwarding and debug logging in TicketMind plugin." />
+    <MESSAGE value="Fixed Password field" />
+    <MESSAGE value="replaced curl by symphony/http-client" />
+    <MESSAGE value="working initial" />
+    <MESSAGE value="Fixed casting in HasConfigurationManagementTrait.php&#10;Flag for full Content.&#10;Simplified logging" />
+    <MESSAGE value="Fixed and simplified logging. Removed debug logger flag." />
+    <MESSAGE value="error log in case of status code error" />
+    <option name="LAST_COMMIT_MESSAGE" value="error log in case of status code error" />
+  </component>
+</project>

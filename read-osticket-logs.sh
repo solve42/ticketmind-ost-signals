@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Activate virtual environment if it exists
-source ~/venv/OsTicketDraftGeneration/bin/activate
+source ~/venv/ticketmind-core/bin/activate
 
 # Extract API key and run command
 API_KEY="$(sed -n 's/^paramiko_connection_str=\(.*\)$/\1/p' .env)"

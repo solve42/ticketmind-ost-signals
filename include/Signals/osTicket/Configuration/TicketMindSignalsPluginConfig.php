@@ -1,6 +1,26 @@
 <?php
+/**
+ * TicketMind Signals Plugin — TicketMind API Client
+ * Copyright (C) 2025  Solve42 GmbH
+ * Author: Eugen Massini <info@solve42.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  SPDX-License-Identifier: GPL-2.0-only
+ */
 
-namespace TicketMind\Data\Signals\osTicket\Configuration;
+namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
@@ -48,51 +68,49 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
         $form = $this->getForm();
         include \TicketMindSignalsPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
     }
-
-    function renderCustomConfig()
-    {
-        $this->renderConfig();
-    }
-
     function saveConfig() {
-        // TODO: Change copypasta
         try {
             $form = $this->getForm();
 
-            if ($form instanceof \Form && $form->isValid() === TRUE) {
-                $errors = [];
-                $values = $form->getClean();
+            if (!($form instanceof \Form) || $form->isValid() !== true) {
+                return false;
+            }
 
-                $has_requirements = \is_array($values) === TRUE
-                    && $this->pre_save($values, $errors) === TRUE
-                    && \count($errors += $form->errors()) === 0;
+            $errors = [];
+            $values = $form->getClean();
 
-                if ($has_requirements) {
-                    $data = [];
+            if (! is_array($values)) {
+                return false;
+            }
+            if (! $this->pre_save($values, $errors)) {
+                return false;
+            }
 
-                    foreach ($values as $name => $value) {
-                        $field = $form->getField($name);
+            // Merge form errors without overwriting existing keys (like `$a + $b`)
+            $formErrors = $form->errors();
+            if (is_array($formErrors)) {
+                $errors = $errors + $formErrors;
+            }
 
-                        if ($field instanceof \FormField) {
-                            try {
-                                $data[$name] = $field->to_database($value);
-                            }
+            if (count($errors) !== 0) {
+                return false;
+            }
 
-                            catch (\FieldUnchanged $ex) {
-                                unset($data[$name]);
-                            }
-                        }
+            $data = [];
+            foreach ($values as $name => $value) {
+                $field = $form->getField($name);
+                if ($field instanceof \FormField) {
+                    try {
+                        $data[$name] = $field->to_database($value);
+                    } catch (\FieldUnchanged $ex) {
+                        unset($data[$name]);
                     }
-
-                    return $this->updateAll($data);
                 }
             }
-        }
 
-        catch (\Throwable $ex) {
+            return $this->updateAll($data);
+        } catch (\Throwable $ex) {
+            return false;
         }
-
-        return FALSE;
     }
-
 }

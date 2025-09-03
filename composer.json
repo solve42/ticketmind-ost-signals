@@ -2,11 +2,10 @@
   "name": "solve42/ticketmind-ost-signals",
   "description": "TicketMind osTicket Signals Plugin",
   "keywords": [
-    "plugin",
-    "php",
     "osticket",
-    "streaming-data",
-    "osticket-plugin"
+    "osticket-plugin",
+    "plugin",
+    "php"
   ],
   "type": "project",
   "require": {
@@ -19,7 +18,7 @@
   "license": "Apache-2.0",
   "authors": [
     {
-      "name": "Solve42 Team",
+      "name": "Solve42 GmbH Team",
       "email": "info@solve42.de"
     }
   ],
@@ -29,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TicketMind\\Data\\": "include"
+      "TicketMind\\Plugin\\": "include"
     }
   }
 }
