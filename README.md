@@ -1,13 +1,15 @@
-# TicketMind osTicket Signals Plugin - Installation Guide
+# TicketMind Support AI Agent
 
-provided by Solve42 GmbH.
-
-Product page: https://ticketmind.de
+This plugin integrates osTicket with TicketMind's AI-powered support agent platform.
 
 ## Overview
-The TicketMind osTicket Signals Plugin forwards ticket creation and thread entry events from osTicket to the TicketMind API for processing and analytics.
+The TicketMind Support AI Agent consists of the agent component and receives tickets from osTicket via this plugin, which is provided in this repository.
+The ticketmind-ost-signals plugin forwards ticket creation and thread entry events from osTicket to the TicketMind AI Agent Backend for processing and response creation.
 
-## System Requirements
+For details, see the product page https://ticketmind.de. For a technical use case description, see the company page https://solve42.de/uc/ticketmind.html#start.
+Here we handle only the installation part of the plugin.
+
+## System requirements
 
 ### Prerequisites
 - **osTicket**: Version 1.10 or higher
@@ -17,88 +19,104 @@ The TicketMind osTicket Signals Plugin forwards ticket creation and thread entry
   - `ext-filter` (Input filtering)
   - `ext-mbstring` (Multibyte string support)
 - **Composer**: For installing PHP dependencies
-- **Web Server**: Apache or Nginx with appropriate permissions
 
-### Network Requirements
-- Outbound HTTPS connectivity to TicketMind API endpoints
-- SSL/TLS support for secure API communication
+### Network requirements
+If you have restricted outbound HTTPS connectivity, you will need to open the firewall. You will be provided with the appropriate TicketMind API endpoints when signing up for the product.
+If you don't restrict outbound HTTPS connectivity, no further action is required.
 
-## Pre-Installation Steps
+## Installation
+The first step is installing the plugin on the osTicket server.
+Here you need access to the server where osTicket is installed, or ask the administrator.
 
-### 1. Download the Plugin
+### 1. Download the plugin
+There are two options: A) downloading the latest release ZIP archive or B) cloning the repository.
+Choose the first option if you want the latest stable version and choose cloning if you want the latest changes.
 
-#### Option A: Clone from Repository
+#### Option A: Download ZIP archive
+1. Download the latest release from GitHub: https://github.com/solve42/ticketmind-ost-signals/releases
+2. Extract to your osTicket plugins directory. Usually osTicket is installed under `/var/www/osTicket` directory.
+
 ```bash
-cd /path/to/osticket/include/plugins
-git clone https://github.com/solve42/ticketmind-ost-signals.git
-cd ticketmind-ost-signals
-```
-
-#### Option B: Download ZIP Archive
-1. Download the latest release from the GitHub repository
-2. Extract to your osTicket plugins directory:
-```bash
-cd /path/to/osticket/include/plugins
+cd /var/www/osTicket/upload/include/plugins
 unzip ticketmind-ost-signals.zip
 cd ticketmind-ost-signals
 ```
 
-### 2. Install Dependencies
+#### Option B: Clone from repository
+To fetch the latest state:
+```bash
+cd /var/www/osTicket/upload/include/plugins
+git clone https://github.com/solve42/ticketmind-ost-signals.git
+cd ticketmind-ost-signals
+```
+
+### 2. Install dependencies
 
 The plugin uses Composer for dependency management. Dependencies are installed in the `lib/` directory instead of the standard `vendor/` directory.
 
-#### Method 1: Using the Installation Script
-```bash
-# Make the script executable
-chmod +x install-composer.sh
-
-# Run the installation script
-./install-composer.sh
-```
-
-#### Method 2: Manual Installation
+#### 2.1 Install Composer & dependencies manually
 ```bash
 # Download Composer if not already installed
 curl -sS https://getcomposer.org/installer | php
 
-# Install dependencies
+# a) Install dependencies
 php composer.phar install
 
-# Or if Composer is globally installed
+# b) Or if Composer is globally installed
 composer install
 ```
 
-### 3. Verify Installation
+### 3. Verify installation
 Ensure the following files and directories exist:
-- `lib/autoload.php` - Composer autoloader
-- `lib/symfony/` - Symfony HttpClient library
-- `plugin.php` - Plugin metadata file
-- `TicketMindSignalsPlugin.php` - Main plugin class
+- `ticketmind-ost-signals/lib/autoload.php` - Composer autoloader
+- `ticketmind-ost-signals/lib/symfony/` - Symfony HttpClient library
+- `ticketmind-ost-signals/plugin.php` - Plugin metadata file
+- `ticketmind-ost-signals/TicketMindSignalsPlugin.php` - Main plugin class
 
-## Installation
+Now the ticketmind-ost-signals plugin can be installed. Go to the osTicket Admin Panel → Manage → Plugins → Add New.
+The TicketMind Support AI Agent osTicket Plugin should appear (see screenshot below).
 
-### Method 1: Via osTicket Admin Panel (Recommended)
+![Check the plugin shows up](docs/assets/1-plugin-main.webp)
 
-1. **Access Admin Panel**
-   - Log in to osTicket as an administrator
-   - Navigate to **Admin Panel → Manage → Plugins**
+## Configuration
 
-2. **Add New Plugin**
-   - Click **Add New Plugin**
-   - Click **Install** next to "TicketMind osTicket Signals"
+Continue from the last step of the installation process. See the screenshot above.
+Install and enable the plugin. Add a new instance.
 
-3. **Verify Installation**
-   - The plugin should appear in the installed plugins list
-   - Status should show as "Disabled" initially
+Required parameters should be provided by TicketMind:
 
-### Method 2: Manual File Installation
+1. **TicketMind Host URL**
+   - Enter the full URL of your TicketMind API endpoint
+   - Example: `https://api.ticketmind.com/queue`
+   - Must include protocol (https://)
 
-If the plugin doesn't appear in the admin panel:
+2. **API Key**
+   - Enter your TicketMind API authentication key
+   - Obtain this from your TicketMind account settings
+   - Keep this secure - it authenticates your osTicket instance
+
+3. **Include Content in Forwarded Messages**
+   - Enable to include full ticket/thread content, because this is what we need for the agent.
+
+   Disabling will send only metadata (ticket ID, timestamps, etc.).
+
+4. **Enable Forwarding**
+   - Otherwise, no data will be sent to TicketMind.
+
+Save the instance. See also the screenshot below.
+
+![Check the plugin shows up](docs/assets/2-plugin-instance.webp)
+
+
+## Troubleshooting
+
+### Plugin not visible in admin panel
+The plugin doesn't appear in the admin panel.
 
 1. **Set Correct Permissions**
 ```bash
 # Navigate to plugin directory
-cd /path/to/osticket/include/plugins/ticketmind-ost-signals
+cd /var/www/osTicket/upload/include/plugins/ticketmind-ost-signals
 
 # Set appropriate ownership (adjust user/group as needed)
 chown -R www-data:www-data .
@@ -113,212 +131,117 @@ find . -type f -exec chmod 644 {} \;
 2. **Clear osTicket Cache**
 ```bash
 # Remove cached plugin registry
-rm -f /path/to/osticket/include/plugins/.registry
+rm -f /var/www/osTicket/upload/include/plugins/.registry
 ```
 
 3. **Refresh Plugin List**
    - Return to Admin Panel → Manage → Plugins
    - The plugin should now appear
 
-## Configuration
-
-### 1. Enable the Plugin
-
-1. Navigate to **Admin Panel → Manage → Plugins**
-2. Click on **TicketMind osTicket Signals**
-3. Change status to **Enabled**
-4. Click **Save Changes**
-
-### 2. Configure Plugin Settings
-
-Click on the plugin name to access configuration:
-
-#### Required Settings
-
-1. **TicketMind Host URL**
-   - Enter the full URL of your TicketMind API endpoint
-   - Example: `https://api.ticketmind.com/queue`
-   - Must include protocol (https://)
-
-2. **API Key**
-   - Enter your TicketMind API authentication key
-   - Obtain this from your TicketMind account settings
-   - Keep this secure - it authenticates your osTicket instance
-
-#### Optional Settings
-
-3. **Include Content in Forwarded Messages**
-   - Enable to include full ticket/thread content
-   - Disable to send only metadata (ticket ID, timestamps, etc.)
-   - Default: Enabled
-
-4. **Enable Forwarding**
-   - Master switch to enable/disable all forwarding
-   - Useful for maintenance or troubleshooting
-   - Default: Enabled
-
-### 3. Save Configuration
-
-Click **Save Changes** to apply your configuration.
-
-## Testing the Installation
-
-### 1. Verify Plugin Status
-
-Check that the plugin is active:
-```sql
--- Connect to osTicket database
-SELECT * FROM ost_plugin WHERE name LIKE '%TicketMind%';
-```
-
-The plugin should show `isactive = 1`.
-
-### 2. Test Connection
-
-Create a test ticket to verify forwarding:
-
-1. Create a new ticket via any channel (web form, email, API)
-2. Check osTicket system logs for any errors:
-   - Navigate to **Admin Panel → Dashboard → System Logs**
-   - Look for entries from "TicketMind Plugin"
-
-3. Verify in TicketMind:
-   - Log in to your TicketMind dashboard
-   - Check if the test ticket appears in the queue
-
-### 3. Monitor Logs
-
-Check server logs for detailed information:
-```bash
-# Apache error log
-tail -f /var/log/apache2/osticket_error.log
-
-# Or for Nginx
-tail -f /var/log/nginx/error.log
-
-# PHP error log (location varies)
-tail -f /var/log/php/error.log
-```
-
-## Troubleshooting
-
-### Common Issues
-
-#### Plugin Not Visible in Admin Panel
-- Ensure all files are properly uploaded
-- Check file permissions (readable by web server)
-- Delete `/include/plugins/.registry` file
-- Verify PHP version compatibility
-
-#### Dependencies Not Loading
+### Dependencies not loading
 ```bash
 # Regenerate autoloader
-cd /path/to/osticket/include/plugins/ticketmind-ost-signals
+cd /var/www/osTicket/upload/include/plugins/ticketmind-ost-signals
 php composer.phar dump-autoload
 ```
 
-#### API Connection Failures
+### API connection failures
 - Verify TicketMind Host URL is correct and accessible
 - Check API key validity
 - Ensure outbound HTTPS is not blocked by firewall
-- Review SSL certificate validation settings
+- Check osTicket system logs for errors.
 
-#### No Data Being Forwarded
-1. Verify "Enable Forwarding" is checked
-2. Check osTicket system logs for errors
-3. Ensure proper signal handlers are registered:
-   - The plugin should handle `ticket.created` and `threadentry.created` signals
+### No data being forwarded
+- Verify "Enable Forwarding" is checked 
+- Check osTicket system logs for errors
 
-### Debug Mode
+### Debug mode
 
 To enable detailed logging:
 
-1. Edit `/path/to/osticket/include/ost-config.php`
+1. Edit `/var/www/osTicket/upload/include/ost-config.php`
 2. Add or modify:
 ```php
 define('LOG_LEVEL', LOG_DEBUG);
 ```
 
-### Log File Locations
+### Log file locations
 
 - **osTicket System Logs**: Admin Panel → Dashboard → System Logs
 - **Apache Error Log**: `/var/log/apache2/osticket_error.log`
 - **PHP Error Log**: Check `phpinfo()` for error_log location
 - **Plugin-specific Logs**: Check for "TicketMind Plugin" entries in system logs
 
-## Updating the Plugin
+## Updating the plugin
 
-### 1. Backup Current Installation
+### 1. Backup current installation
 ```bash
-cd /path/to/osticket/include/plugins
+cd /var/www/osTicket/upload/include/plugins
 cp -r ticketmind-ost-signals ticketmind-ost-signals.backup
 ```
 
-### 2. Update Files
+### 2. Update files
 ```bash
 cd ticketmind-ost-signals
 git pull origin main
 # Or extract new version from ZIP
 ```
 
-### 3. Update Dependencies
+### 3. Update dependencies
 ```bash
 php composer.phar update
 ```
 
-### 4. Clear Cache
+### 4. Clear cache
 ```bash
-rm -f /path/to/osticket/include/plugins/.registry
+rm -f /var/www/osTicket/upload/include/plugins/.registry
 ```
 
-### 5. Verify Configuration
+### 5. Verify configuration
 - Check plugin settings remain intact
 - Test with a new ticket
 - Check audit logs for any errors
 
 ## Uninstallation
 
-### 1. Disable Plugin
+### 1. Disable plugin
 1. Navigate to **Admin Panel → Manage → Plugins**
-2. Click on **TicketMind osTicket Signals**
+2. Click on **TicketMind Support AI Agent osTicket Plugin**
 3. Set status to **Disabled**
 4. Click **Save Changes**
 
-### 2. Remove Plugin (Optional)
+### 2. Remove plugin (optional)
 1. Click **Delete** in the plugin management interface
 2. Or manually remove files:
 ```bash
-rm -rf /path/to/osticket/include/plugins/ticketmind-ost-signals
+rm -rf /var/www/osTicket/upload/include/plugins/ticketmind-ost-signals
 ```
 
-### 3. Clean Database (Optional)
+### 3. Clean database (optional)
 ```sql
 -- Remove plugin configuration from database
 DELETE FROM ost_plugin WHERE id = 'ticketmind:ost:signals';
 DELETE FROM ost_config WHERE namespace LIKE 'ticketmind%';
 ```
 
-## Security Considerations
+## Security considerations
+1. Rotate keys periodically
 
-1. **API Key Protection**
-   - Store API keys securely
-   - Use HTTPS for all API communications
-   - Rotate keys periodically
-
-2. **File Permissions**
+2. File Permissions
    - Ensure plugin files are not world-writable
    - Protect configuration files containing sensitive data
 
-3. **Network Security**
+3. Network Security
    - Whitelist outbound connection to TicketMind API endpoints in firewall rules
 
 ## Support
 
-### Getting Help
+### Getting help
 - **GitHub Issues**: https://github.com/solve42/ticketmind-ost-signals/issues
 - **Logs**: Always check system and error logs first
 
-### Reporting Issues
+
+### Reporting issues
 When reporting issues, please include:
 - osTicket version
 - PHP version
@@ -327,4 +250,8 @@ When reporting issues, please include:
 - Steps to reproduce the issue
 
 ## License
-This plugin is licensed under GPL-2.0-only. See LICENSE file for details.
+This plugin is licensed under GPL-2.0-only. See `LICENSE.TXT` for details.
+
+<div style="text-align: center">
+TicketMind is provided by <a href="https://solve42.de" target="_blank">Solve42 GmbH</a>.
+</div>
