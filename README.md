@@ -1,9 +1,10 @@
 # TicketMind Support AI Agent
 
 This plugin integrates osTicket with TicketMind's AI-powered support agent platform.
+This platform enables osTicket for AI automation to answer customer questions and provide support.
 
 ## Overview
-The TicketMind Support AI Agent consists of the agent component and receives tickets from osTicket via this plugin, which is provided in this repository.
+The TicketMind Support AI Agent consists of the agent component. It receives tickets from osTicket via this plugin, which is provided in this repository.
 The ticketmind-ost-signals plugin forwards ticket creation and thread entry events from osTicket to the TicketMind AI Agent Backend for processing and response creation.
 
 For details, see the product page https://ticketmind.de. For a technical use case description, see the company page https://solve42.de/uc/ticketmind.html#start.
@@ -25,8 +26,8 @@ If you have restricted outbound HTTPS connectivity, you will need to open the fi
 If you don't restrict outbound HTTPS connectivity, no further action is required.
 
 ## Installation
-The first step is installing the plugin on the osTicket server.
-Here you need access to the server where osTicket is installed, or ask the administrator.
+The first step is to install the plugin on the osTicket server.
+Here you need access to the server where osTicket is installed, or ask an administrator.
 
 ### 1. Download the plugin
 There are two options: A) downloading the latest release ZIP archive or B) cloning the repository.
@@ -34,7 +35,7 @@ Choose the first option if you want the latest stable version and choose cloning
 
 #### Option A: Download ZIP archive
 1. Download the latest release from GitHub: https://github.com/solve42/ticketmind-ost-signals/releases
-2. Extract to your osTicket plugins directory. Usually osTicket is installed under `/var/www/osTicket` directory.
+2. Extract to your osTicket plugins directory. Usually osTicket is installed under the `/var/www/osTicket` directory.
 
 ```bash
 cd /var/www/osTicket/upload/include/plugins
@@ -98,7 +99,7 @@ Required parameters should be provided by TicketMind:
 3. **Include Content in Forwarded Messages**
    - Enable to include full ticket/thread content, because this is what we need for the agent.
 
-   Disabling will send only metadata (ticket ID, timestamps, etc.).
+   Disabling it will send only metadata (ticket ID, timestamps, etc.).
 
 4. **Enable Forwarding**
    - Otherwise, no data will be sent to TicketMind.
@@ -148,11 +149,11 @@ php composer.phar dump-autoload
 ### API connection failures
 - Verify TicketMind Host URL is correct and accessible
 - Check API key validity
-- Ensure outbound HTTPS is not blocked by firewall
+- Ensure outbound HTTPS is not blocked by the firewall
 - Check osTicket system logs for errors.
 
 ### No data being forwarded
-- Verify "Enable Forwarding" is checked 
+- Verify "Enable Forwarding" is checked
 - Check osTicket system logs for errors
 
 ### Debug mode
@@ -232,7 +233,7 @@ DELETE FROM ost_config WHERE namespace LIKE 'ticketmind%';
    - Protect configuration files containing sensitive data
 
 3. Network Security
-   - Whitelist outbound connection to TicketMind API endpoints in firewall rules
+   - Whitelist outbound connections to TicketMind API endpoints in firewall rules
 
 ## Support
 
