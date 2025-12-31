@@ -1,6 +1,6 @@
 <?php
 /**
- * TicketMind Signals Plugin — TicketMind API Client
+ * TicketMind Support AI Agent osTicket Plugin
  * Copyright (C) 2025  Solve42 GmbH
  * Author: Eugen Massini <info@solve42.de>
  *

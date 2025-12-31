@@ -1,6 +1,6 @@
 <?php
 /**
- * TicketMind Signals Plugin — TicketMind API Client
+ * TicketMind Support AI Agent osTicket Plugin
  * Copyright (C) 2025  Solve42 GmbH
  * Author: Eugen Massini <info@solve42.de>
  *
@@ -24,9 +24,9 @@ return [
   'id' => 'ticketmind:ost:signals',
   'version' => '0.0.1',
   'ost_version' => '1.10',
-  'name' => 'TicketMind osTicket Signals',
+  'name' => 'TicketMind Support AI Agent osTicket Plugin',
   'author' => 'Solve42 GmbH',
-  'description' => 'Plugin to forward ticket created and thread entry created signals from osTickets to TicketMind',
+  'description' => 'Plugin to forward ticket created and thread entry created signals from osTickets to TicketMind Support AI Agent',
   'url' => 'https://github.com/solve42/ticketmind-ost-signals',
   'plugin' => 'TicketMindSignalsPlugin.php:TicketMindSignalsPlugin',
 ];
