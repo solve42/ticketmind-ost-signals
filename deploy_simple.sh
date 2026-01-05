@@ -19,6 +19,11 @@ EOF
 sftp $REMOTE_USER@$REMOTE_HOST << EOF
 cd $REMOTE_PATH/include/Signals/osTicket/Configuration
 put include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php
+put include/Signals/osTicket/Configuration/ConfigValues.php
+
+cd $REMOTE_PATH/include/Signals/osTicket/Client
+put include/Signals/osTicket/Client/RestApiClient.php
+put include/Signals/osTicket/Client/RestApiClientPure.php
 bye
 EOF
 

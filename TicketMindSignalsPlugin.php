@@ -22,8 +22,10 @@
 require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
+require_once(INCLUDE_DIR . 'class.thread.php');
 
 use TicketMind\Plugin\Signals\osTicket\Client\RestApiClient;
+use TicketMind\Plugin\Signals\osTicket\Client\RestApiClientPure;
 use TicketMind\Plugin\Signals\osTicket\Configuration\ConfigValues;
 use TicketMind\Plugin\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig;
 
@@ -67,12 +69,42 @@ class TicketMindSignalsPlugin extends \Plugin {
    * {@inheritDoc}
    */
   function bootstrap(): void {
-      //error_log('TicketMind OST Signals Plugin has been initialized');
+      //error_log('TicketMind OST Signals Plugin initialize');
       
       \Signal::connect('ticket.created',[$this, 'onTicketCreated']);
       \Signal::connect('threadentry.created', [$this, 'onThreadEntryCreated']);
 
+      \Signal::connect('ajax.scp', function ($dispatcher) {
+          $dispatcher->append(
+              url_post('^/ticketmind/rag/(?P<id>\d+)/submit$', [$this, 'ajaxAddToRag'])
+          );
+      });
+
+      \Signal::connect('ticket.view.more', [$this, 'onTicketViewMoreAddToRag'], 'Ticket');
+
       error_log('TicketMind OST Signals Connected!');
+  }
+
+  private static function createRestApiClient(): RestApiClientPure {
+      //return new RestApiClient();
+      return new RestApiClientPure();
+  }
+
+  private function exportThreadEntries($thread): array {
+    $entries = $thread->getEntries();
+
+    $types = ['M', 'R', 'N'];
+    if ($types)
+        $entries->filter(array('type__in' => $types));
+
+    $entries->order_by('id');
+
+    $rows = array();
+    foreach ($entries as $entry) {
+        $rows[] = $this->thread2data($entry, ConfigValues::includeContent());
+    }
+
+    return $rows;
   }
 
   public function onTicketCreated(\Ticket $ticket, &$extra): void {
@@ -103,8 +135,8 @@ class TicketMindSignalsPlugin extends \Plugin {
           'extra' => $extra_data
       ];
 
-      $apiClient = new RestApiClient();
-      $success = $apiClient->sendPayload($data);
+      $apiClient = $this->createRestApiClient();
+      $success = $apiClient->sendSignal($data);
       if ($success) {
           $this->logDebug(
               sprintf('Signal: ticket.created. Ticket send successfully - Number: %s', $ticket->getNumber())
@@ -116,14 +148,7 @@ class TicketMindSignalsPlugin extends \Plugin {
       }
   }
 
-  public function onThreadEntryCreated(\ThreadEntry $entry): void {
-      $this->logDebug('Signal Called onThreadEntryCreated');
-
-      if (!ConfigValues::isForwardingEnabled()) {
-          $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
-          return;
-      }
-
+  private static function thread2data(\ThreadEntry $entry, bool $include_content=true): array {
       $ticket = $entry->getThread()->getObject();
 
       $extra_data = [
@@ -140,11 +165,7 @@ class TicketMindSignalsPlugin extends \Plugin {
           'is_answered' => $ticket->isAnswered(),
       ];
 
-      if (!ConfigValues::includeContent()) {
-          $full_data = $extra_data;
-      } else {
-          $this->logDebug('Signal: threadentry.created Send with full content. Thread Id: ' . $entry->getThreadId());
-
+      if ($include_content) {
           $content = [
               'name' => $entry->getName(),
               'title' => $entry->getTitle(),
@@ -152,73 +173,63 @@ class TicketMindSignalsPlugin extends \Plugin {
           ];
 
           $full_data = array_merge($extra_data, $content);
+      } else {
+          $full_data = $extra_data;
       }
 
       $data = [
-          'signal' => 'threadentry.created',
           'ticket_id' => $entry->getThread()->getObjectId(),
           'created_dt' => $entry->getCreateDate(),
           'extra' => $full_data,
       ];
+      return $data;
+  }
 
-      $apiClient = new RestApiClient();
+  private function sendTicket2Rag(\Thread $thread, string $msgSource): bool {
+      $this->logDebug(sprintf('Command /addtorag from %s - ID: %s', $msgSource, $thread->getId()));
+      $content = $this->exportThreadEntries($thread);
 
-      $success = $apiClient->sendPayload($data);
+      $apiClient = $this->createRestApiClient();
+      $success = $apiClient->sendTicket2Rag($content);
       if ($success) {
           $this->logDebug(
-              sprintf('Signal: threadentry.created. Ticket send successfully - ID: %s', $entry->getThreadId())
+              sprintf('Command /addtorag. Thread content send successfully - ID: %s', $thread->getId())
           );
       }else {
           $this->logError(
-              sprintf('Signal: threadentry.created send failed - ID: %s', $entry->getThreadId())
+              sprintf('Command /addtorag send failed - ID: %s', $thread->getId())
           );
       }
+      return $success;
   }
 
-  public function updateModel($object, $type) {
-      $data = [
-          'model_type' => $type,
-          'model_class' => get_class($object),
-          'model_id' => method_exists($object, 'getId') ? $object->getId() : 'N/A',
-          'timestamp' => date('Y-m-d H:i:s')
-      ];
+  public function onThreadEntryCreated(\ThreadEntry $entry): void {
+      $this->logDebug('Signal Called onThreadEntryCreated');
 
-      $this->logInfo(
-          sprintf('Signal model.updated - Type: %s, Class: %s, ID: %s',
-              $type,
-              get_class($object),
-              $data['model_id']
-          )
-      );
-      
-      $this->logInfo(
-          'Signal: model.updated',
-      );
-      
-      // TODO: Implement model update logic
-  }
+      if (!ConfigValues::isForwardingEnabled()) {
+          $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
+          return;
+      }
 
-  public function deleteModel($object, $type) {
-      $data = [
-          'model_type' => $type,
-          'model_class' => get_class($object),
-          'model_id' => method_exists($object, 'getId') ? $object->getId() : 'N/A',
-          'timestamp' => date('Y-m-d H:i:s')
-      ];
-      // Use logInfo for deletions as they're more important
-      $this->logInfo(
-          sprintf('Signal model.deleted - Type: %s, Class: %s, ID: %s',
-              $type,
-              get_class($object),
-              $data['model_id']
-          )
-      );
-      
-      $this->logInfo(
-          'Signal: model.deleted',
-      );
-      
-      // TODO: Implement model delete logic
+      $thread_entry_data = $this->thread2data($entry, ConfigValues::includeContent());
+      $data = array_merge($thread_entry_data, ['signal' => 'threadentry.created']);
+
+
+      if ($data['extra']['type'] == 'N' && str_contains(strtolower($data['extra']['body']), '/addtorag')) {
+          $this->sendTicket2Rag($entry->getThread(), "signal threadentry.created");
+      } else {
+          $apiClient = $this->createRestApiClient();
+          $success = $apiClient->sendSignal($data);
+          if ($success) {
+              $this->logDebug(
+                  sprintf('Signal: threadentry.created. Ticket send successfully - ID: %s', $entry->getThreadId())
+              );
+          }else {
+              $this->logError(
+                  sprintf('Signal: threadentry.created send failed - ID: %s', $entry->getThreadId())
+              );
+          }
+      }
   }
 
   /**
@@ -230,6 +241,94 @@ class TicketMindSignalsPlugin extends \Plugin {
     }
 
     $this->{'ht'}['name'] = $this->{'info'}['name'];
+  }
+
+  public function onTicketViewMoreAddToRag(\Ticket $ticket, &$extra): void {
+      $this->logDebug('(onTicketViewMoreAddToRag) Setup Add to Rag Button..');
+
+      global $thisstaff;
+      if (!$thisstaff || !$thisstaff->isStaff()) { // is not staff
+          $this->logDebug('(onTicketViewMoreAddToRag) Setup Add to Rag Button, stopped since not staff user.');
+          return;
+      }
+
+      echo <<<JS
+        <script>
+            function tmCsrfToken() {
+              var t = $('input[name="__CSRFToken__"]').first().val();
+              if (!t) t = $('input[name="csrf_token"]').first().val();
+              return t || '';
+            }
+        
+          $(document).on("click", "a.tm-addtorag", function(e){
+            e.preventDefault();
+            var id = $(this).data("ticket-id");
+            $.ajax({
+                url: "ajax.php/ticketmind/rag/" + id + "/submit",
+                type: "POST",
+                data: { csrf_token: tmCsrfToken() },
+                success: function () { window.location.reload(); },
+                error: function (xhr) { console.error(xhr.status, xhr.responseText); }
+            });
+          });
+        </script>
+      JS;
+
+      echo sprintf(
+          '<li><a href="#" class="tm-addtorag" data-ticket-id="%d"><i class="icon-cogs"></i> %s</a></li>',  $ticket->getId(),
+          __('Add to RAG')
+      );
+
+      $this->logDebug('(onTicketViewMoreAddToRag) Setup Add to Rag Button DONE.');
+  }
+
+  public function ajaxAddToRag($ticketId): void {
+    $this->logDebug('ajaxAddToRag start..');
+
+    global $thisstaff;
+    if (!$thisstaff || !$thisstaff->isStaff()) {
+        $this->logDebug('ajaxAddToRag stopped since not staff user.');
+        return;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->logDebug('ajaxAddToRag Exit due to Method Not Allowed');
+      Http::response(405, 'Method Not Allowed');
+      return;
+    }
+
+    if (!($ticket = \Ticket::lookup($ticketId))) {
+        $this->logDebug('ajaxAddToRag Exit due to Ticket not found');
+        Http::response(404, 'Ticket not found');
+    }
+
+    if (!$ticket->checkStaffPerm($thisstaff, \Ticket::PERM_EDIT)) {
+      $this->logDebug('ajaxAddToRag Exit due to Permission denied. Agent requires EDIT permission.');
+      Http::response(403, 'Permission denied');
+    }
+
+    $vars = [
+      'note' => '/addtorag',
+      'title' => __('Add to RAG'),
+      'staffId' => $thisstaff->getId(),
+      'poster' => $thisstaff->getName(),
+      'activity' => __('Add to RAG'),
+    ];
+
+    $errors = [];
+
+    $note = $ticket->postNote($vars, $errors, $thisstaff, /* alert= */ false);
+    if (!$note) {
+      $err_str = implode('; ', $errors);
+      $this->logError('ajaxAddToRag failed to post note. Errors: ' . $err_str);
+      Http::response(400, 'Failed to add note. Errors: ' . $err_str);
+      return;
+    }
+
+    $this->logDebug('ajaxAddToRag note posted successfully!');
+
+    Http::response(201, 'OK');
+    return;
   }
 
   /**
