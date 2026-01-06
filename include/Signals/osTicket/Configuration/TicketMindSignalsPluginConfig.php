@@ -33,9 +33,9 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
             'section' => new \SectionBreakField(array(
                 'label' => __('TicketMind Settings'),
             )),
-            'queue_url' => new \TextboxField(array(
-                'label' => __('TicketMind Host'),
-                'hint' => __('The TicketMind Host URL'),
+            'ticketmind_api_url' => new \TextboxField(array(
+                'label' => __('TicketMind API URL'),
+                'hint' => __('The TicketMind API URL'),
                 'configuration' => [
                     'size' => 60,
                     'length' => 256,

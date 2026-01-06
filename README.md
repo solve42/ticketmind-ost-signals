@@ -19,7 +19,7 @@ Here we handle only the installation part of the plugin.
   - `ext-json` (JSON functions)
   - `ext-filter` (Input filtering)
   - `ext-mbstring` (Multibyte string support)
-- **Composer**: For installing PHP dependencies
+  - `ext-curl` (HTTP client)
 
 ### Network requirements
 If you have restricted outbound HTTPS connectivity, you will need to open the firewall. You will be provided with the appropriate TicketMind API endpoints when signing up for the product.
@@ -51,26 +51,8 @@ git clone https://github.com/solve42/ticketmind-ost-signals.git
 cd ticketmind-ost-signals
 ```
 
-### 2. Install dependencies
-
-The plugin uses Composer for dependency management. Dependencies are installed in the `lib/` directory instead of the standard `vendor/` directory.
-
-#### 2.1 Install Composer & dependencies manually
-```bash
-# Download Composer if not already installed
-curl -sS https://getcomposer.org/installer | php
-
-# a) Install dependencies
-php composer.phar install
-
-# b) Or if Composer is globally installed
-composer install
-```
-
-### 3. Verify installation
+### 2. Verify installation
 Ensure the following files and directories exist:
-- `ticketmind-ost-signals/lib/autoload.php` - Composer autoloader
-- `ticketmind-ost-signals/lib/symfony/` - Symfony HttpClient library
 - `ticketmind-ost-signals/plugin.php` - Plugin metadata file
 - `ticketmind-ost-signals/TicketMindSignalsPlugin.php` - Main plugin class
 
@@ -139,13 +121,6 @@ rm -f /var/www/osTicket/upload/include/plugins/.registry
    - Return to Admin Panel → Manage → Plugins
    - The plugin should now appear
 
-### Dependencies not loading
-```bash
-# Regenerate autoloader
-cd /var/www/osTicket/upload/include/plugins/ticketmind-ost-signals
-php composer.phar dump-autoload
-```
-
 ### API connection failures
 - Verify TicketMind Host URL is correct and accessible
 - Check API key validity
@@ -188,17 +163,12 @@ git pull origin main
 # Or extract new version from ZIP
 ```
 
-### 3. Update dependencies
-```bash
-php composer.phar update
-```
-
-### 4. Clear cache
+### 3. Clear cache
 ```bash
 rm -f /var/www/osTicket/upload/include/plugins/.registry
 ```
 
-### 5. Verify configuration
+### 4. Verify configuration
 - Check plugin settings remain intact
 - Test with a new ticket
 - Check audit logs for any errors

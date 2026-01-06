@@ -28,31 +28,37 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use TicketMind\Plugin\Signals\osTicket\Configuration\ConfigValues;
 
 class RestApiClient {
-
-    private $queueUrl;
-    private $apiKey;
+    private readonly string $baseUrl;
+    private readonly string $queueUrl;
+    private readonly string $ragUrl;
+    private readonly string $apiKey;
     private HttpClientInterface $httpClient;
 
     public function __construct() {
-        $this->queueUrl = ConfigValues::getQueueUrl();
-        $this->apiKey = ConfigValues::getApiKey();
+        $this->baseUrl = ConfigValues::getTicketMindApiURL();
+        $this->queueUrl = $this->baseUrl . '/ticketmind/thread-entries/';
+        $this->ragUrl = $this->baseUrl . '/ticketmind/rag/';
         $this->httpClient = HttpClient::create();
     }
 
-    public function sendPayload(array $payload): bool {
+    public function sendTicket2Rag(array $payload): bool {
+        return $this->sendRequest($this->ragUrl, $payload);
+    }
+
+    public function sendSignal(array $payload): bool {
+        return $this->sendRequest($this->queueUrl, $payload);
+    }
+
+    private function sendRequest(string $url, array $payload): bool {
         if (!$this->isConfigured()) {
             $this->logError('TicketMind Plugin not configured properly');
             return false;
         }
 
-        return $this->sendRequest($payload);
-    }
-
-    private function sendRequest(array $payload): bool {
         $jsonPayload = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         try {
-            $response = $this->httpClient->request('POST', $this->queueUrl, [
+            $response = $this->httpClient->request('POST', $url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Token ' . $this->apiKey,
@@ -91,7 +97,7 @@ class RestApiClient {
     }
 
     private function isConfigured(): bool {
-        return !empty($this->queueUrl) && !empty($this->apiKey);
+        return !empty($this->baseUrl) && !empty($this->apiKey);
     }
 
     private function logError(string $message): void {

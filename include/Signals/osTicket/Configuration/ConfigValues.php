@@ -23,13 +23,13 @@
 namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 
 class ConfigValues {
-    const QUEUE_URL = 'queue_url';
+    const TICKETMIND_API_URL = 'ticketmind_api_url';  // Example: https://ai.ticketmind.de/api
     const API_KEY = 'api_key';
     const FORWARD_ENABLED = 'forward_enabled';
     const WITH_CONTENT = 'with_content';
 
-    public static function getQueueUrl(): ?string {
-        return static::getTextboxValue(static::QUEUE_URL)?->getClean();
+    public static function getTicketMindApiURL(): ?string {
+        return rtrim(static::getTextboxValue(static::TICKETMIND_API_URL)?->getClean(), '/');
     }
 
     public static function getApiKey(): ?string {
