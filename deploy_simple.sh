@@ -8,10 +8,16 @@ echo "Deploying plugin files to Azure..."
 
 # Deploy main files
 sftp $REMOTE_USER@$REMOTE_HOST << EOF
+mkdir $REMOTE_PATH
+mkdir $REMOTE_PATH/include
+mkdir $REMOTE_PATH/include/Signals
+mkdir $REMOTE_PATH/include/Signals/osTicket
+mkdir $REMOTE_PATH/include/Signals/osTicket/Configuration
+mkdir $REMOTE_PATH/include/Signals/osTicket/Client
+
 cd $REMOTE_PATH
 put plugin.php
 put TicketMindSignalsPlugin.php
-put composer.json
 bye
 EOF
 
@@ -20,6 +26,7 @@ sftp $REMOTE_USER@$REMOTE_HOST << EOF
 cd $REMOTE_PATH/include/Signals/osTicket/Configuration
 put include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php
 put include/Signals/osTicket/Configuration/ConfigValues.php
+put include/Signals/osTicket/Configuration/ExtraBooleanField.php
 
 cd $REMOTE_PATH/include/Signals/osTicket/Client
 put include/Signals/osTicket/Client/RestApiClient.php
@@ -27,22 +34,5 @@ put include/Signals/osTicket/Client/RestApiClientPure.php
 bye
 EOF
 
-# Deploy lib files
-sftp $REMOTE_USER@$REMOTE_HOST << EOF
-cd $REMOTE_PATH/lib
-put lib/autoload.php
-cd composer
-put lib/composer/autoload_classmap.php
-put lib/composer/autoload_namespaces.php
-put lib/composer/autoload_psr4.php
-put lib/composer/autoload_real.php
-put lib/composer/autoload_static.php
-put lib/composer/ClassLoader.php
-put lib/composer/installed.json
-put lib/composer/installed.php
-put lib/composer/InstalledVersions.php
-put lib/composer/platform_check.php
-bye
-EOF
 
 echo "Deployment complete!"

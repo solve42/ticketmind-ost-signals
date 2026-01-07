@@ -1,3 +1,7 @@
+# 2026-01-06 1.0.1 - Fixed issues
+## Bugfix
+- Removed dependency on composer.
+
 # 2026-01-06 1.0.0 - Add to Rag function
 ## Features
 - Now adding full thread to rag is possible. Use `/addtorag` command as internal note command or call with menu. 
