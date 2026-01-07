@@ -25,6 +25,7 @@ namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
 require_once(INCLUDE_DIR . 'class.forms.php');
+require_once(__DIR__ . '/ExtraBooleanField.php');
 
 
 class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCustomConfig {

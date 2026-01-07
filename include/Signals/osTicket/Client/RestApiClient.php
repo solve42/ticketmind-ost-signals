@@ -22,6 +22,8 @@
 
 namespace TicketMind\Plugin\Signals\osTicket\Client;
 
+require_once(__DIR__ . '/../Configuration/ConfigValues.php');
+
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

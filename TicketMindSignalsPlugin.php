@@ -19,10 +19,14 @@
  *
  *  SPDX-License-Identifier: GPL-2.0-only
  */
-require_once dirname(__FILE__) . '/lib/autoload.php';
+//require_once dirname(__FILE__) . '/lib/autoload.php';
 
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.thread.php');
+require_once(__DIR__ . '/include/Signals/osTicket/Configuration/TicketMindSignalsPluginConfig.php');
+require_once(__DIR__ . '/include/Signals/osTicket/Configuration/ConfigValues.php');
+require_once(__DIR__ . '/include/Signals/osTicket/Client/RestApiClient.php');
+require_once(__DIR__ . '/include/Signals/osTicket/Client/RestApiClientPure.php');
 
 use TicketMind\Plugin\Signals\osTicket\Client\RestApiClient;
 use TicketMind\Plugin\Signals\osTicket\Client\RestApiClientPure;
@@ -40,7 +44,7 @@ class TicketMindSignalsPlugin extends \Plugin {
   /**
    * {@inheritDoc}
    */
-  public $config_class = TicketMindSignalsPluginConfig::class;
+  public $config_class = \TicketMind\Plugin\Signals\osTicket\Configuration\TicketMindSignalsPluginConfig::class;
 
   /**
    * The plugin directory path.
@@ -260,15 +264,21 @@ class TicketMindSignalsPlugin extends \Plugin {
               return t || '';
             }
         
-          $(document).on("click", "a.tm-addtorag", function(e){
+          $(document).off("click.tmAddToRag").on("click.tmAddToRag", "a.tm-addtorag", function(e){
             e.preventDefault();
-            var id = $(this).data("ticket-id");
+            var link = $(this);
+            if (link.data("tmBusy")) {
+                return;
+            }
+            link.data("tmBusy", true);
+            var id = link.data("ticket-id");
             $.ajax({
                 url: "ajax.php/ticketmind/rag/" + id + "/submit",
                 type: "POST",
                 data: { csrf_token: tmCsrfToken() },
                 success: function () { window.location.reload(); },
-                error: function (xhr) { console.error(xhr.status, xhr.responseText); }
+                error: function (xhr) { console.error(xhr.status, xhr.responseText); },
+                complete: function () { link.data("tmBusy", false); }
             });
           });
         </script>

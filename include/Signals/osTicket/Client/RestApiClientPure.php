@@ -22,6 +22,8 @@
 
 namespace TicketMind\Plugin\Signals\osTicket\Client;
 
+require_once(__DIR__ . '/../Configuration/ConfigValues.php');
+
 use TicketMind\Plugin\Signals\osTicket\Configuration\ConfigValues;
 
 class RestApiClientPure
