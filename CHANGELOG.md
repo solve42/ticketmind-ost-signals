@@ -1,3 +1,8 @@
+# 2026-03-29 1.1.0 - Self-Signed Certificate support.
+## Features
+- Added support for self-signed certificates.
+- Tested on osTicket (v1.18.3)
+
 # 2026-01-06 1.0.1 - Fixed issues
 ## Bugfix
 - Removed dependency on composer.
