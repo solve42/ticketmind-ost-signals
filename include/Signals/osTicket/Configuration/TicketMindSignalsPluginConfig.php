@@ -50,6 +50,14 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                 ),
                 'hint' => __('API key for authentication with the queue service'),
             )),
+            'tls_ca_file' => new \TextboxField(array(
+                'label' => __('TLS CA / Self-Signed Cert Path'),
+                'hint' => __('Optional absolute path to a PEM certificate file to trust for HTTPS connections. Use this for private or self-signed certificates.'),
+                'configuration' => [
+                    'size' => 60,
+                    'length' => 512,
+                ],
+            )),
             'with_content' => new ExtraBooleanField(array(
                 'label' => __('Include Content'),
                 'default' => NULL,

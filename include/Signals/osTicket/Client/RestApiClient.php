@@ -34,12 +34,15 @@ class RestApiClient {
     private readonly string $queueUrl;
     private readonly string $ragUrl;
     private readonly string $apiKey;
+    private readonly ?string $tlsCaFile;
     private HttpClientInterface $httpClient;
 
     public function __construct() {
         $this->baseUrl = ConfigValues::getTicketMindApiURL();
         $this->queueUrl = $this->baseUrl . '/ticketmind/thread-entries/';
         $this->ragUrl = $this->baseUrl . '/ticketmind/rag/';
+        $this->apiKey = (string) ConfigValues::getApiKey();
+        $this->tlsCaFile = ConfigValues::getTlsCaFile();
         $this->httpClient = HttpClient::create();
     }
 
@@ -60,7 +63,7 @@ class RestApiClient {
         $jsonPayload = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         try {
-            $response = $this->httpClient->request('POST', $url, [
+            $options = [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Token ' . $this->apiKey,
@@ -71,7 +74,18 @@ class RestApiClient {
                 'max_redirects' => 3,
                 'verify_peer' => true,
                 'verify_host' => true,
-            ]);
+            ];
+
+            if ($this->tlsCaFile !== null) {
+                if (!is_readable($this->tlsCaFile)) {
+                    $this->logError('Configured TLS CA file is not readable: ' . $this->tlsCaFile);
+                    return false;
+                }
+
+                $options['cafile'] = $this->tlsCaFile;
+            }
+
+            $response = $this->httpClient->request('POST', $url, $options);
             
             $httpCode = $response->getStatusCode();
             $responseContent = $response->getContent(false);

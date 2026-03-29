@@ -22,9 +22,12 @@
 
 namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 
+require_once(__DIR__ . '/ExtraBooleanField.php');
+
 class ConfigValues {
     const TICKETMIND_API_URL = 'ticketmind_api_url';  // Example: https://ai.ticketmind.de/api
     const API_KEY = 'api_key';
+    const TLS_CA_FILE = 'tls_ca_file';
     const FORWARD_ENABLED = 'forward_enabled';
     const WITH_CONTENT = 'with_content';
 
@@ -34,6 +37,16 @@ class ConfigValues {
 
     public static function getApiKey(): ?string {
         return static::getPasswordValue(static::API_KEY)?->getClean();
+    }
+
+    public static function getTlsCaFile(): ?string {
+        $value = static::getTextboxValue(static::TLS_CA_FILE)?->getClean();
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $value = trim($value);
+        return $value !== '' ? $value : null;
     }
 
     public static function isForwardingEnabled(): bool {
