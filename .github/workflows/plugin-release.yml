@@ -103,6 +103,52 @@ jobs:
                ".DS_Store" "*/.DS_Store"
           ls -lah "${ZIP_NAME}"
 
+      - name: Extract top changelog entry and validate tag version
+        if: steps.meta.outputs.on_main == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f CHANGELOG.md ]]; then
+            echo "CHANGELOG.md not found in repo root." >&2
+            exit 1
+          fi
+
+          awk '
+            BEGIN {
+              in_section = 0
+            }
+            /^# / {
+              if (in_section == 1) {
+                exit
+              }
+              in_section = 1
+            }
+            in_section {
+              print
+            }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+
+          if [[ ! -s RELEASE_NOTES.md ]]; then
+            echo "Top changelog entry is empty or missing." >&2
+            exit 1
+          fi
+
+          FIRST_HEADING="$(head -n 1 RELEASE_NOTES.md)"
+          CHANGELOG_VERSION="$(printf '%s\n' "${FIRST_HEADING}" | sed -nE 's/^# [0-9]{4}-[0-9]{2}-[0-9]{2} ([^[:space:]]+).*/\1/p')"
+
+          if [[ -z "${CHANGELOG_VERSION}" ]]; then
+            echo "Could not extract version from top changelog heading: ${FIRST_HEADING}" >&2
+            exit 1
+          fi
+
+          if [[ "${CHANGELOG_VERSION}" != "${VERSION}" ]]; then
+            echo "Top changelog version ${CHANGELOG_VERSION} does not match tag version ${VERSION}." >&2
+            exit 1
+          fi
+
+          cat RELEASE_NOTES.md
+
       - name: Create GitHub Release (tag push)
         if: steps.meta.outputs.on_main == 'true'
         uses: softprops/action-gh-release@v2
@@ -110,4 +156,4 @@ jobs:
           name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           files: ${{ env.ZIP_NAME }}
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md

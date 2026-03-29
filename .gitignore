@@ -2,6 +2,10 @@
 .env
 
 composer.phar
+deploy_simple.sh
+deploy_to_azure.sh
+read-osticket-logs.sh
+install-composer.sh
 CLAUDE.md
 #scripts/
 
