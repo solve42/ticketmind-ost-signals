@@ -83,7 +83,12 @@ Required parameters should be provided by TicketMind:
 
    Disabling it will send only metadata (ticket ID, timestamps, etc.).
 
-4. **Enable Forwarding**
+4. **TLS CA / Self-Signed Cert Path**
+   - Optional absolute path to a PEM certificate file on the osTicket server.
+   - Use this when the TicketMind endpoint uses a private CA or a self-signed certificate.
+   - Example: `/etc/ssl/certs/ticketmind-selfsigned.pem`
+
+5. **Enable Forwarding**
    - Otherwise, no data will be sent to TicketMind.
 
 Save the instance. See also the screenshot below.

@@ -32,6 +32,7 @@ class RestApiClientPure
     private readonly string $queueUrl;
     private readonly string $ragUrl;
     private readonly string $apiKey;
+    private readonly ?string $tlsCaFile;
 
     public function __construct()
     {
@@ -39,16 +40,23 @@ class RestApiClientPure
         $this->queueUrl = $this->baseUrl . '/ticketmind/thread-entries/';
         $this->ragUrl = $this->baseUrl . '/ticketmind/rag/';
         $this->apiKey = (string)ConfigValues::getApiKey();
+        $this->tlsCaFile = ConfigValues::getTlsCaFile();
     }
 
     public function sendTicket2Rag(array $payload): bool
     {
-        return $this->sendRequest($this->ragUrl, $payload);
+        $this->logDebug('Try to sendTicket2Rag...');
+        $result = $this->sendRequest($this->ragUrl, $payload);
+        $this->logDebug('sendTicket2Rag done...');
+        return $result;
     }
 
     public function sendSignal(array $payload): bool
     {
-        return $this->sendRequest($this->queueUrl, $payload);
+        $this->logDebug('Try to send ticket / thread signal...');
+        $result = $this->sendRequest($this->queueUrl, $payload);
+        $this->logDebug('ticket / thread signal sending done...');
+        return $result;
     }
 
     private function sendRequest(string $url, array $payload): bool
@@ -70,13 +78,17 @@ class RestApiClientPure
             'User-Agent: TicketMind-OST-Signals/1.0',
         ];
 
-        // Prefer cURL (best control over TLS / status codes / timeouts)
         if (function_exists('curl_init')) {
-            return $this->sendWithCurl($url, $jsonPayload, $headers);
+            // Prefer cURL (best control over TLS / status codes / timeouts)
+            $this->logDebug('Send via Curl...');
+            $result = $this->sendWithCurl($url, $jsonPayload, $headers);
+            return $result;
+        } else {
+            // Fallback without cURL (less control, but works on minimal PHP installs)
+            $this->logDebug('Send via Streams...');
+            $result = $this->sendWithStreams($url, $jsonPayload, $headers);
+            return $result;
         }
-
-        // Fallback without cURL (less control, but works on minimal PHP installs)
-        return $this->sendWithStreams($url, $jsonPayload, $headers);
     }
 
     private function sendWithCurl(string $url, string $jsonPayload, array $headers): bool
@@ -102,6 +114,16 @@ class RestApiClientPure
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
         ]);
+
+        if ($this->tlsCaFile !== null) {
+            if (is_readable($this->tlsCaFile)) {
+                curl_setopt($ch, CURLOPT_CAINFO, $this->tlsCaFile);
+            } else {
+                $this->logError('Configured TLS CA file is not readable: ' . $this->tlsCaFile);
+                curl_close($ch);
+                return false;
+            }
+        }
 
         $raw = curl_exec($ch);
 
@@ -132,6 +154,15 @@ class RestApiClientPure
     private function sendWithStreams(string $url, string $jsonPayload, array $headers): bool
     {
         // Note: stream wrapper has limited redirect support and status parsing.
+        $sslOptions = [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+        ];
+        $tlsCaFile = $this->getReadableTlsCaFile();
+        if ($tlsCaFile !== null) {
+            $sslOptions['cafile'] = $tlsCaFile;
+        }
+
         $context = stream_context_create([
             'http' => [
                 'method' => 'POST',
@@ -140,10 +171,7 @@ class RestApiClientPure
                 'timeout' => 30,
                 'ignore_errors' => true, // fetch body even on 4xx/5xx
             ],
-            'ssl' => [
-                'verify_peer' => true,
-                'verify_peer_name' => true,
-            ],
+            'ssl' => $sslOptions,
         ]);
 
         $body = @file_get_contents($url, false, $context);
@@ -165,6 +193,7 @@ class RestApiClientPure
                 }
             }
         }
+        $this->logDebug('HTTP client response status: ' . $status . ' Content: ' . $body);
 
         if ($status >= 200 && $status < 300) {
             return true;
@@ -178,6 +207,20 @@ class RestApiClientPure
     private function isConfigured(): bool
     {
         return !empty($this->baseUrl) && !empty($this->apiKey);
+    }
+
+    private function getReadableTlsCaFile(): ?string
+    {
+        if ($this->tlsCaFile === null) {
+            return null;
+        }
+
+        if (is_readable($this->tlsCaFile)) {
+            return $this->tlsCaFile;
+        }
+
+        $this->logError('Configured TLS CA file is not readable: ' . $this->tlsCaFile);
+        return null;
     }
 
     private function logError(string $message): void
