@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - if: startsWith(github.ref, '/refs/tags/')
+      - if: startsWith(github.ref, 'refs/tags/')
         # We want only tags
         name: Resolve tag and verify it’s on main
         id: meta
@@ -37,21 +37,22 @@ jobs:
             exit 1
           fi
           
-          if git merge-base --is-ancestor "$COMMIT" origin/main; then
+          MAIN_COMMIT="$(git rev-parse --verify "origin/main^{commit}")"
+          if [[ "$COMMIT" == "$MAIN_COMMIT" ]]; then
             echo "on_main=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Tag $TAG does not point to main; skipping release."
+            echo "Tag ${VERSION} does not point to origin/main HEAD; skipping release."
             echo "on_main=false" >> "$GITHUB_OUTPUT"
           fi
 
-          ZIP_NAME="$${{ github.event.repository.name }}-${VERSION}.zip"
+          ZIP_NAME="${{ github.event.repository.name }}-${VERSION}.zip"
           
           {
             echo "VERSION=${VERSION}"
             echo "ZIP_NAME=${ZIP_NAME}"
           } >> "$GITHUB_ENV"
 
-      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
         name: Update version in plugin.php → ${{ env.VERSION }}
         shell: bash
         run: |
@@ -60,28 +61,9 @@ jobs:
             echo "plugin.php not found in repo root. Adjust the workflow if it's elsewhere." >&2
             exit 1
           fi
-          cat > .update_version.php <<'PHP'
-          <?php
-          $file = 'plugin.php';
-          $version = getenv('VERSION');
-          if (!file_exists($file)) { fwrite(STDERR, "plugin.php not found\n"); exit(1); }
-          $code = file_get_contents($file);
+          python3 .github/scripts/update_ost_plugin_version.py "${VERSION}"
 
-          // 1) "'version' => '...'"
-          $count1 = 0;
-          $code = preg_replace("/(['\"]version['\"]\s*=>\s*['\"])([^'\"]+)(['\"])/i", "\\1{$version}\\3", $code, -1, $count1);
-
-          // 2) "$version = '...';"
-          $count2 = 0;
-          $code = preg_replace("/(\$version\s*=\s*['\"])([^'\"]+)(['\"]\s*;)/i", "\\1{$version}\\3", $code, -1, $count2);
-
-          file_put_contents($file, $code);
-          echo "Updated plugin.php (array matches: $count1, var matches: $count2)\n";
-          PHP
-          php .update_version.php
-          rm .update_version.php
-
-      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
         name: Build filtered zip
         shell: bash
         run: |
@@ -104,7 +86,7 @@ jobs:
                ".DS_Store" "*/.DS_Store"
           ls -lah "${ZIP_NAME}"
 
-      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
         name: Extract top changelog entry and validate tag version
         shell: bash
         run: |
@@ -150,7 +132,7 @@ jobs:
 
           cat RELEASE_NOTES.md
 
-      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
         name: Create GitHub Release (tag push)
         uses: softprops/action-gh-release@v2
         with:
