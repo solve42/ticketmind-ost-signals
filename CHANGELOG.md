@@ -1,3 +1,7 @@
+# 2026-03-29 1.1.2 - Fixed ci/cd release creation
+## Bugfix
+- Fixed ci/cd release creation
+
 # 2026-03-29 1.1.0 - Self-Signed Certificate support.
 ## Features
 - Added support for self-signed certificates.
