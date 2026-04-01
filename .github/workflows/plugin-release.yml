@@ -19,18 +19,23 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-
-      - name: Resolve tag and verify it’s on main
+      - if: startsWith(github.ref, '/refs/tags/')
+        # We want only tags
+        name: Resolve tag and verify it’s on main
         id: meta
         shell: bash
         run: |
           set -euo pipefail
           
-          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION=${{ github.ref_name }}
           
           git fetch origin main
-          
-          COMMIT="$(git rev-list -n 1 "$TAG")"
+          if COMMIT="$(git rev-parse --verify "${VERSION}^{commit}" 2>/dev/null)"; then
+            echo "Commit: $COMMIT"
+          else
+            echo "Invalid or missing tag: $TAG"
+            exit 1
+          fi
           
           if git merge-base --is-ancestor "$COMMIT" origin/main; then
             echo "on_main=true" >> "$GITHUB_OUTPUT"
@@ -39,19 +44,15 @@ jobs:
             echo "on_main=false" >> "$GITHUB_OUTPUT"
           fi
 
-          # Derive version string (strip prefixes v, if available)
-          VERSION="${TAG}"
-          VERSION="${VERSION#v}"; VERSION="${VERSION#V}"
-          REPO_NAME="${GITHUB_REPOSITORY##*/}"
-          ZIP_NAME="${REPO_NAME}-${TAG}.zip"
+          ZIP_NAME="$${{ github.event.repository.name }}-${VERSION}.zip"
           
           {
             echo "VERSION=${VERSION}"
             echo "ZIP_NAME=${ZIP_NAME}"
           } >> "$GITHUB_ENV"
 
-      - name: Update version in plugin.php → ${{ env.VERSION }}
-        if: steps.meta.outputs.on_main == 'true'
+      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+        name: Update version in plugin.php → ${{ env.VERSION }}
         shell: bash
         run: |
           set -euo pipefail
@@ -80,8 +81,8 @@ jobs:
           php .update_version.php
           rm .update_version.php
 
-      - name: Build filtered zip
-        if: steps.meta.outputs.on_main == 'true'
+      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+        name: Build filtered zip
         shell: bash
         run: |
           set -euo pipefail
@@ -103,8 +104,8 @@ jobs:
                ".DS_Store" "*/.DS_Store"
           ls -lah "${ZIP_NAME}"
 
-      - name: Extract top changelog entry and validate tag version
-        if: steps.meta.outputs.on_main == 'true'
+      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+        name: Extract top changelog entry and validate tag version
         shell: bash
         run: |
           set -euo pipefail
@@ -149,8 +150,8 @@ jobs:
 
           cat RELEASE_NOTES.md
 
-      - name: Create GitHub Release (tag push)
-        if: steps.meta.outputs.on_main == 'true'
+      - if: startsWith(github.ref, '/refs/tags/') && (steps.meta.outputs.on_main == 'true')
+        name: Create GitHub Release (tag push)
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
