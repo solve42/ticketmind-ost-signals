@@ -1,3 +1,7 @@
+# 2026-06-22 1.1.3 - Certificate path validation
+## Feature
+- Certificate path validation added.
+
 # 2026-03-29 1.1.2 - Fixed ci/cd release creation
 ## Bugfix
 - Fixed ci/cd release creation
