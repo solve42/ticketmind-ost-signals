@@ -122,4 +122,15 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
             return false;
         }
     }
+
+    function pre_save(&$config, &$errors) {
+        $tls_ca_file_path = $config['tls_ca_file'] ?? '';
+        if ($tls_ca_file_path !== '' && !is_file($tls_ca_file_path)) {
+            $field = $this->getForm()->getField('tls_ca_file');
+            $field->addError(__('Certificate file not found at this path.'));
+            $errors['tls_ca_file'] = __('Certificate file not found at this path.');
+            return false;
+        }
+        return true;
+    }
 }
