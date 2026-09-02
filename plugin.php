@@ -22,7 +22,7 @@
 
 return [
   'id' => 'ticketmind:ost:signals',
-  'version' => '1.1.3',
+  'version' => '1.1.4',
   'ost_version' => '1.10',
   'name' => 'TicketMind Support AI Agent osTicket Plugin',
   'author' => 'Solve42 GmbH',

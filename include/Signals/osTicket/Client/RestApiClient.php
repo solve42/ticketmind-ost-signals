@@ -39,8 +39,8 @@ class RestApiClient {
 
     public function __construct() {
         $this->baseUrl = ConfigValues::getTicketMindApiURL();
-        $this->queueUrl = $this->baseUrl . '/ticketmind/thread-entries/';
-        $this->ragUrl = $this->baseUrl . '/ticketmind/rag/';
+        $this->queueUrl = $this->baseUrl . 'v1/osticket/thread-entries/';
+        $this->ragUrl = $this->baseUrl . 'v1/osticket/rag/';
         $this->apiKey = (string) ConfigValues::getApiKey();
         $this->tlsCaFile = ConfigValues::getTlsCaFile();
         $this->httpClient = HttpClient::create();
