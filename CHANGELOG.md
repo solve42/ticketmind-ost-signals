@@ -1,3 +1,6 @@
+# 2026-06-22 1.1.4 - Adapted endpoints to TicketMind Backend
+- endpoints changed
+
 # 2026-06-22 1.1.3 - Certificate path validation
 ## Feature
 - Certificate path validation added.
