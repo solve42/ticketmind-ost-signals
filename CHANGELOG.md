@@ -1,3 +1,7 @@
+# 2026-06-22 1.1.5 - Adapted endpoints to TicketMind Backend
+## Bugfix
+- endpoints prefixes
+
 # 2026-06-22 1.1.4 - Adapted endpoints to TicketMind Backend
 - endpoints changed
 
