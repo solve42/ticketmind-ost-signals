@@ -30,6 +30,7 @@ class ConfigValues {
     const TLS_CA_FILE = 'tls_ca_file';
     const FORWARD_ENABLED = 'forward_enabled';
     const WITH_CONTENT = 'with_content';
+    const SELECTED_AGENT_ID = 'selected_agent_id';
 
     public static function getTicketMindApiURL(): ?string {
         return rtrim(static::getTextboxValue(static::TICKETMIND_API_URL)?->getClean(), '/');
@@ -55,6 +56,18 @@ class ConfigValues {
 
     public static function includeContent(): bool {
         return (bool) static::getAsBooleanValue(static::WITH_CONTENT)?->getClean();
+    }
+
+    /**
+     * Return the configured agent, or null when forwarding is unrestricted.
+     */
+    public static function getSelectedAgentId(): ?int {
+        $value = static::getTextboxValue(static::SELECTED_AGENT_ID)?->getClean();
+        if (!is_numeric($value) || (int) $value <= 0) {
+            return null;
+        }
+
+        return (int) $value;
     }
 
     /**

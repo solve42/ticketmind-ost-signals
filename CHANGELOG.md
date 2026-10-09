@@ -1,3 +1,8 @@
+# 2026-10-09 1.2.0 - Optional agent visibility filter
+## Feature
+- Added an optional agent selector that forwards only tickets visible to the selected agent.
+- Leaving the selector set to All agents preserves unrestricted forwarding.
+
 # 2026-06-22 1.1.5 - Adapted endpoints to TicketMind Backend
 ## Bugfix
 - endpoints prefixes

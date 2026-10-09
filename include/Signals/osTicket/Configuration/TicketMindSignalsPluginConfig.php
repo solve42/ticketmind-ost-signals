@@ -25,6 +25,7 @@ namespace TicketMind\Plugin\Signals\osTicket\Configuration;
 require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
 require_once(INCLUDE_DIR . 'class.forms.php');
+require_once(INCLUDE_DIR . 'class.staff.php');
 require_once(__DIR__ . '/ExtraBooleanField.php');
 
 
@@ -57,6 +58,12 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                     'size' => 60,
                     'length' => 512,
                 ],
+            )),
+            'selected_agent_id' => new \ChoiceField(array(
+                'label' => __('Forward only tickets visible to agent'),
+                'default' => '',
+                'choices' => array('' => __('— All agents —')) + \Staff::getStaffMembers(),
+                'hint' => __('Optionally restrict forwarding to tickets that this agent is allowed to view. Leave this set to All agents to forward tickets as before.'),
             )),
             'with_content' => new ExtraBooleanField(array(
                 'label' => __('Include Content'),

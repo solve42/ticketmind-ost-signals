@@ -88,7 +88,11 @@ Required parameters should be provided by TicketMind:
    - Use this when the TicketMind endpoint uses a private CA or a self-signed certificate.
    - Example: `/etc/ssl/certs/ticketmind-selfsigned.pem`
 
-5. **Enable Forwarding**
+5. **Forward only tickets visible to agent**
+   - Optional. Choose an agent to forward only tickets that agent can view.
+   - Leave this set to **All agents** to retain the original, unrestricted forwarding behaviour.
+
+6. **Enable Forwarding**
    - Otherwise, no data will be sent to TicketMind.
 
 Save the instance. See also the screenshot below.
