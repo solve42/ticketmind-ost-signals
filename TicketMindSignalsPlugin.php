@@ -100,6 +100,16 @@ class TicketMindSignalsPlugin extends \Plugin {
    * No configured agent deliberately preserves the previous behaviour.
    */
   private function canForwardTicket(\Ticket $ticket): bool {
+      $helpTopicIds = ConfigValues::getSelectedHelpTopicIds();
+      if ($helpTopicIds && !in_array((int) $ticket->getTopicId(), $helpTopicIds, true)) {
+          $this->logDebug(sprintf(
+              'Forwarding skipped for ticket %s: help topic %s is not selected.',
+              $ticket->getNumber(),
+              $ticket->getTopicId()
+          ));
+          return false;
+      }
+
       $agentId = ConfigValues::getSelectedAgentId();
       if ($agentId === null) {
           return true;

@@ -31,6 +31,7 @@ class ConfigValues {
     const FORWARD_ENABLED = 'forward_enabled';
     const WITH_CONTENT = 'with_content';
     const SELECTED_AGENT_ID = 'selected_agent_id';
+    const SELECTED_HELP_TOPIC_IDS = 'selected_help_topic_ids';
 
     public static function getTicketMindApiURL(): ?string {
         return rtrim(static::getTextboxValue(static::TICKETMIND_API_URL)?->getClean(), '/');
@@ -68,6 +69,28 @@ class ConfigValues {
         }
 
         return (int) $value;
+    }
+
+    /**
+     * Return selected help-topic IDs, or an empty array when unrestricted.
+     */
+    public static function getSelectedHelpTopicIds(): array {
+        $value = static::getChoiceValue(static::SELECTED_HELP_TOPIC_IDS)?->getClean();
+        if (!is_array($value)) {
+            $value = array($value);
+        } elseif (!static::isList($value)) {
+            // ChoiceField stores selected values as id => display-name pairs.
+            $value = array_keys($value);
+        }
+
+        $topicIds = array();
+        foreach ($value as $topicId) {
+            if (is_numeric($topicId) && (int) $topicId > 0) {
+                $topicIds[] = (int) $topicId;
+            }
+        }
+
+        return array_values(array_unique($topicIds));
     }
 
     /**
@@ -114,10 +137,30 @@ class ConfigValues {
         );
     }
 
+    private static function getChoiceValue(string $name): \ChoiceField {
+        return static::getFormField(
+            new \ChoiceField(array(
+                'configuration' => array('multiselect' => true),
+            )),
+            $name
+        );
+    }
+
     private static function getAsBooleanValue(string $name): ExtraBooleanField {
         return static::getFormField(
             new ExtraBooleanField(),
             $name
         );
+    }
+
+    private static function isList(array $value): bool {
+        $expectedKey = 0;
+        foreach ($value as $key => $_) {
+            if ($key !== $expectedKey++) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -26,7 +26,9 @@ require_once(INCLUDE_DIR . 'class.plugin.php');
 require_once(INCLUDE_DIR . 'class.translation.php');
 require_once(INCLUDE_DIR . 'class.forms.php');
 require_once(INCLUDE_DIR . 'class.staff.php');
+require_once(INCLUDE_DIR . 'class.topic.php');
 require_once(__DIR__ . '/ExtraBooleanField.php');
+require_once(__DIR__ . '/DynamicChoiceFields.php');
 
 
 class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCustomConfig {
@@ -59,11 +61,18 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                     'length' => 512,
                 ],
             )),
-            'selected_agent_id' => new \ChoiceField(array(
+            'selected_agent_id' => new AgentChoiceField(array(
                 'label' => __('Forward only tickets visible to agent'),
                 'default' => '',
-                'choices' => array('' => __('— All agents —')) + \Staff::getStaffMembers(),
                 'hint' => __('Optionally restrict forwarding to tickets that this agent is allowed to view. Leave this set to All agents to forward tickets as before.'),
+            )),
+            'selected_help_topic_ids' => new HelpTopicChoiceField(array(
+                'label' => __('Forward only selected help topics'),
+                'default' => array(),
+                'configuration' => array(
+                    'multiselect' => true,
+                ),
+                'hint' => __('Optionally select one or more help topics to forward. Leave this empty to forward tickets from all help topics.'),
             )),
             'with_content' => new ExtraBooleanField(array(
                 'label' => __('Include Content'),

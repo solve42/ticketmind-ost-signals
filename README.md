@@ -92,7 +92,11 @@ Required parameters should be provided by TicketMind:
    - Optional. Choose an agent to forward only tickets that agent can view.
    - Leave this set to **All agents** to retain the original, unrestricted forwarding behaviour.
 
-6. **Enable Forwarding**
+6. **Forward only selected help topics**
+   - Optional. Select one or more help topics to forward only tickets created with those topics.
+   - Leave the selection empty to forward tickets from every help topic.
+
+7. **Enable Forwarding**
    - Otherwise, no data will be sent to TicketMind.
 
 Save the instance. See also the screenshot below.
