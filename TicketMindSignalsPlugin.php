@@ -94,6 +94,51 @@ class TicketMindSignalsPlugin extends \Plugin {
       return new RestApiClientPure();
   }
 
+  /**
+   * Check the optional agent visibility restriction before exporting a ticket.
+   *
+   * No configured agent deliberately preserves the previous behaviour.
+   */
+  private function canForwardTicket(\Ticket $ticket): bool {
+      $helpTopicIds = ConfigValues::getSelectedHelpTopicIds();
+      if ($helpTopicIds && !in_array((int) $ticket->getTopicId(), $helpTopicIds, true)) {
+          $this->logDebug(sprintf(
+              'Forwarding skipped for ticket %s: help topic %s is not selected.',
+              $ticket->getNumber(),
+              $ticket->getTopicId()
+          ));
+          return false;
+      }
+
+      $agentId = ConfigValues::getSelectedAgentId();
+      if ($agentId === null) {
+          return true;
+      }
+
+      $agent = \Staff::lookup($agentId);
+      if (!$agent) {
+          $this->logError(sprintf(
+              'Forwarding skipped for ticket %s: configured agent %s was not found.',
+              $ticket->getNumber(),
+              $agentId
+          ));
+          return false;
+      }
+
+      // osTicket grants ticket view access when no action-specific permission
+      // is requested. There is no Ticket::PERM_VIEW constant.
+      if (!$ticket->checkStaffPerm($agent)) {
+          $this->logDebug(sprintf(
+              'Forwarding skipped for ticket %s: it is not visible to configured agent %s.',
+              $ticket->getNumber(),
+              $agentId
+          ));
+          return false;
+      }
+
+      return true;
+  }
+
   private function exportThreadEntries($thread): array {
     $entries = $thread->getEntries();
 
@@ -116,6 +161,10 @@ class TicketMindSignalsPlugin extends \Plugin {
 
       if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $ticket->getThreadId());
+          return;
+      }
+
+      if (!$this->canForwardTicket($ticket)) {
           return;
       }
 
@@ -212,6 +261,11 @@ class TicketMindSignalsPlugin extends \Plugin {
 
       if (!ConfigValues::isForwardingEnabled()) {
           $this->logDebug('Forwarding disabled, ticket id ' . $entry->getThreadId());
+          return;
+      }
+
+      $ticket = $entry->getThread()->getObject();
+      if (!$this->canForwardTicket($ticket)) {
           return;
       }
 

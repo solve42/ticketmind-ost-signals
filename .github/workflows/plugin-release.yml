@@ -1,10 +1,14 @@
 name: Plugin Release
 
 on:
-  push:
-    tags:
-      - "*.*.*"
-      - "v*.*.*"
+  workflow_dispatch:
+
+# A release is deliberately started by a maintainer instead of every push to
+# main. This prevents a changelog entry intended for a future release from
+# being published accidentally.
+concurrency:
+  group: plugin-release-main
+  cancel-in-progress: false
 
 jobs:
   build-and-release:
@@ -13,63 +17,81 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout Repo & Tags
+      - name: Check out main and its tags
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
           fetch-tags: true
 
-      - if: startsWith(github.ref, 'refs/tags/')
-        # We want only tags
-        name: Resolve tag and verify it’s on main
-        id: meta
+      - name: Resolve release version from changelog
+        id: release
         shell: bash
         run: |
           set -euo pipefail
-          
-          VERSION=${{ github.ref_name }}
-          
-          git fetch origin main
-          if COMMIT="$(git rev-parse --verify "${VERSION}^{commit}" 2>/dev/null)"; then
-            echo "Commit: $COMMIT"
-          else
-            echo "Invalid or missing tag: $TAG"
+
+          git fetch --force origin main --tags
+          git checkout --detach origin/main
+          RELEASE_COMMIT="$(git rev-parse HEAD)"
+
+          if [[ ! -f CHANGELOG.md ]]; then
+            echo "CHANGELOG.md not found in repository root." >&2
             exit 1
           fi
-          
-          MAIN_COMMIT="$(git rev-parse --verify "origin/main^{commit}")"
-          if [[ "$COMMIT" == "$MAIN_COMMIT" ]]; then
-            echo "on_main=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Tag ${VERSION} does not point to origin/main HEAD; skipping release."
-            echo "on_main=false" >> "$GITHUB_OUTPUT"
+
+          awk '
+            BEGIN { in_section = 0 }
+            /^# / {
+              if (in_section == 1) exit
+              in_section = 1
+            }
+            in_section { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+
+          if [[ ! -s RELEASE_NOTES.md ]]; then
+            echo "Top changelog entry is empty or missing." >&2
+            exit 1
           fi
 
-          ZIP_NAME="${{ github.event.repository.name }}-${VERSION}.zip"
-          
+          FIRST_HEADING="$(head -n 1 RELEASE_NOTES.md)"
+          VERSION="$(printf '%s\n' "${FIRST_HEADING}" | sed -nE 's/^# [0-9]{4}-[0-9]{2}-[0-9]{2} ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p')"
+          if [[ -z "${VERSION}" ]]; then
+            echo "Top changelog heading must start with '# YYYY-MM-DD X.Y.Z': ${FIRST_HEADING}" >&2
+            exit 1
+          fi
+
+          PLUGIN_VERSION="$(sed -nE "s/^[[:space:]]*'version'[[:space:]]*=>[[:space:]]*'([^']+)',[[:space:]]*$/\\1/p" plugin.php | head -n 1)"
+          if [[ "${PLUGIN_VERSION}" != "${VERSION}" ]]; then
+            echo "plugin.php version '${PLUGIN_VERSION:-missing}' does not match changelog version '${VERSION}'." >&2
+            exit 1
+          fi
+
+          TAG_EXISTS=false
+          if git show-ref --verify --quiet "refs/tags/${VERSION}"; then
+            TAG_COMMIT="$(git rev-parse "${VERSION}^{commit}")"
+            if [[ "${TAG_COMMIT}" != "${RELEASE_COMMIT}" ]]; then
+              echo "Tag ${VERSION} already exists but does not point to main HEAD (${RELEASE_COMMIT})." >&2
+              exit 1
+            fi
+            TAG_EXISTS=true
+          fi
+
+          REPOSITORY="${GITHUB_REPOSITORY##*/}"
           {
-            echo "VERSION=${VERSION}"
-            echo "ZIP_NAME=${ZIP_NAME}"
-          } >> "$GITHUB_ENV"
+            echo "version=${VERSION}"
+            echo "zip_name=${REPOSITORY}-${VERSION}.zip"
+            echo "release_commit=${RELEASE_COMMIT}"
+            echo "tag_exists=${TAG_EXISTS}"
+          } >> "$GITHUB_OUTPUT"
 
-      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
-        name: Update version in plugin.php → ${{ env.VERSION }}
+      - name: Build filtered zip
         shell: bash
-        run: |
-          set -euo pipefail
-          if [[ ! -f plugin.php ]]; then
-            echo "plugin.php not found in repo root. Adjust the workflow if it's elsewhere." >&2
-            exit 1
-          fi
-          python3 .github/scripts/update_ost_plugin_version.py "${VERSION}"
-
-      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
-        name: Build filtered zip
-        shell: bash
+        env:
+          ZIP_NAME: ${{ steps.release.outputs.zip_name }}
         run: |
           set -euo pipefail
           rm -f "${ZIP_NAME}"
-          
+
           zip -r "${ZIP_NAME}" . \
             -x ".git/*" \
                ".gitignore" \
@@ -86,57 +108,28 @@ jobs:
                ".DS_Store" "*/.DS_Store"
           ls -lah "${ZIP_NAME}"
 
-      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
-        name: Extract top changelog entry and validate tag version
+      - name: Create annotated tag
+        if: steps.release.outputs.tag_exists != 'true'
         shell: bash
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+          RELEASE_COMMIT: ${{ steps.release.outputs.release_commit }}
         run: |
           set -euo pipefail
-
-          if [[ ! -f CHANGELOG.md ]]; then
-            echo "CHANGELOG.md not found in repo root." >&2
+          git fetch origin main
+          if [[ "$(git rev-parse origin/main)" != "${RELEASE_COMMIT}" ]]; then
+            echo "main advanced while this release was being built; start a new release run." >&2
             exit 1
           fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag --annotate "${VERSION}" --message "Release ${VERSION}" "${RELEASE_COMMIT}"
+          git push origin "refs/tags/${VERSION}"
 
-          awk '
-            BEGIN {
-              in_section = 0
-            }
-            /^# / {
-              if (in_section == 1) {
-                exit
-              }
-              in_section = 1
-            }
-            in_section {
-              print
-            }
-          ' CHANGELOG.md > RELEASE_NOTES.md
-
-          if [[ ! -s RELEASE_NOTES.md ]]; then
-            echo "Top changelog entry is empty or missing." >&2
-            exit 1
-          fi
-
-          FIRST_HEADING="$(head -n 1 RELEASE_NOTES.md)"
-          CHANGELOG_VERSION="$(printf '%s\n' "${FIRST_HEADING}" | sed -nE 's/^# [0-9]{4}-[0-9]{2}-[0-9]{2} ([^[:space:]]+).*/\1/p')"
-
-          if [[ -z "${CHANGELOG_VERSION}" ]]; then
-            echo "Could not extract version from top changelog heading: ${FIRST_HEADING}" >&2
-            exit 1
-          fi
-
-          if [[ "${CHANGELOG_VERSION}" != "${VERSION}" ]]; then
-            echo "Top changelog version ${CHANGELOG_VERSION} does not match tag version ${VERSION}." >&2
-            exit 1
-          fi
-
-          cat RELEASE_NOTES.md
-
-      - if: startsWith(github.ref, 'refs/tags/') && (steps.meta.outputs.on_main == 'true')
-        name: Create GitHub Release (tag push)
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
-          files: ${{ env.ZIP_NAME }}
+          name: ${{ steps.release.outputs.version }}
+          tag_name: ${{ steps.release.outputs.version }}
+          files: ${{ steps.release.outputs.zip_name }}
           body_path: RELEASE_NOTES.md
