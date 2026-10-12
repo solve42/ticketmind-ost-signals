@@ -4,6 +4,7 @@
 - Leaving the agent selector set to All agents preserves unrestricted agent visibility.
 - Added an optional multi-select filter for help topics. Tickets are forwarded only when their help topic is selected.
 - Leaving the filter empty preserves forwarding from all help topics.
+- DEV: better release lifecycle
 
 # 2026-06-22 1.1.5 - Adapted endpoints to TicketMind Backend
 ## Bugfix

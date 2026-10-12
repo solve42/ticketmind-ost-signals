@@ -25,6 +25,19 @@ Here we handle only the installation part of the plugin.
 If you have restricted outbound HTTPS connectivity, you will need to open the firewall. You will be provided with the appropriate TicketMind API endpoints when signing up for the product.
 If you don't restrict outbound HTTPS connectivity, no further action is required.
 
+## Maintainer releases
+
+Prepare the release in a pull request by updating both `plugin.php` and the top
+entry in `CHANGELOG.md`. The changelog heading must use the format
+`# YYYY-MM-DD X.Y.Z - Summary`, and its version must match `plugin.php`.
+The **Release Metadata** GitHub Actions check verifies this on feature-branch
+pushes and pull requests.
+
+After that pull request has been merged, start **Plugin Release** from the
+repository's GitHub Actions tab. The workflow always releases the current
+`main` HEAD: it builds the ZIP, creates annotated tag `X.Y.Z`, and publishes
+the GitHub Release. Do not create the release tag manually.
+
 ## Installation
 The first step is to install the plugin on the osTicket server.
 Here you need access to the server where osTicket is installed, or ask an administrator.
