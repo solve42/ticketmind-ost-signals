@@ -1,4 +1,4 @@
-# 2026-10-09 1.2.0 - Optional forwarding filters
+# 2026-10-10 1.2.0 - Optional forwarding filters
 ## Feature
 - Added an optional agent selector that forwards only tickets visible to the selected agent.
 - Leaving the agent selector set to All agents preserves unrestricted agent visibility.
