@@ -105,17 +105,37 @@ Required parameters should be provided by TicketMind:
    - Optional. Choose an agent to forward only tickets that agent can view.
    - Leave this set to **All agents** to retain the original, unrestricted forwarding behaviour.
 
-6. **Forward only selected help topics**
-   - Optional. Select one or more help topics to forward only tickets created with those topics.
-   - Leave the selection empty to forward tickets from every help topic.
+6. **Response agent**
+   - Optional. Choose the AI agent that posts proposed responses as internal notes, or select **No response agent** to disable double-click copying.
+   - On initial setup, the form proposes an agent only if exactly one agent name contains `TicketMind`, `Ticket Agent`, or `AI Agent`. A saved **No response agent** selection is preserved.
+   - On an open ticket, double-click one of that agent’s internal notes to copy its current content into the reply editor, including after editing the note without reloading. Eligibility follows the original author, even when another agent edits the note. Formatting is preserved when the reply editor uses rich text; plain-text replies retain line breaks. You can use the same agent as the forwarding filter agent or choose a different one.
 
-7. **Enable Forwarding**
+7. **Forward only selected help topics**
+   - Optional. Select one or more help topics to forward only tickets created with those topics.
+   - Select **No help topic** to forward tickets without a help topic. You can select this alone or together with specific topics.
+   - Leave the selection empty to forward all tickets, including those without a help topic.
+
+8. **Enable Forwarding**
    - Otherwise, no data will be sent to TicketMind.
 
 Save the instance. See also the screenshot below.
 
 ![Check the plugin shows up](docs/assets/2-plugin-instance.webp)
 
+
+## Build a plugin ZIP locally
+
+Requires Bash and `zip`. Run the same build script used by GitHub Actions:
+
+```bash
+bash scripts/packzip.sh
+# Or choose an output path (relative to your current directory):
+bash scripts/packzip.sh /tmp/ticketmind-signals.zip
+```
+
+By default, the archive is created in the repository root as `<repository>.zip`. GitHub Actions supplies its own versioned filename. Each build replaces the output with a fresh archive. Development files, documentation, local tooling configuration, and existing ZIP archives are excluded.
+
+All files are packaged inside a top-level `ticketmind-ost-signals/` directory, ready to extract into osTicket's `include/plugins/` directory.
 
 ## Troubleshooting
 

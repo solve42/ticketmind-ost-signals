@@ -31,6 +31,7 @@ class ConfigValues {
     const FORWARD_ENABLED = 'forward_enabled';
     const WITH_CONTENT = 'with_content';
     const SELECTED_AGENT_ID = 'selected_agent_id';
+    const RESPONSE_AGENT_ID = 'response_agent_id';
     const SELECTED_HELP_TOPIC_IDS = 'selected_help_topic_ids';
 
     public static function getTicketMindApiURL(): ?string {
@@ -63,7 +64,18 @@ class ConfigValues {
      * Return the configured agent, or null when forwarding is unrestricted.
      */
     public static function getSelectedAgentId(): ?int {
-        $value = static::getTextboxValue(static::SELECTED_AGENT_ID)?->getClean();
+        return static::getAgentId(static::SELECTED_AGENT_ID);
+    }
+
+    /**
+     * Return the agent whose internal notes may be copied into a reply.
+     */
+    public static function getResponseAgentId(): ?int {
+        return static::getAgentId(static::RESPONSE_AGENT_ID);
+    }
+
+    private static function getAgentId(string $name): ?int {
+        $value = static::getTextboxValue($name)?->getClean();
         if (!is_numeric($value) || (int) $value <= 0) {
             return null;
         }
@@ -72,7 +84,8 @@ class ConfigValues {
     }
 
     /**
-     * Return selected help-topic IDs, or an empty array when unrestricted.
+     * Return selected help-topic IDs (0 means no topic), or an empty array
+     * when unrestricted.
      */
     public static function getSelectedHelpTopicIds(): array {
         $value = static::getChoiceValue(static::SELECTED_HELP_TOPIC_IDS)?->getClean();
@@ -85,7 +98,9 @@ class ConfigValues {
 
         $topicIds = array();
         foreach ($value as $topicId) {
-            if (is_numeric($topicId) && (int) $topicId > 0) {
+            if ($topicId === 'none') {
+                $topicIds[] = 0;
+            } elseif (is_numeric($topicId) && (int) $topicId > 0) {
                 $topicIds[] = (int) $topicId;
             }
         }

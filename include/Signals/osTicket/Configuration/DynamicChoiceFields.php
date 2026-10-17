@@ -28,13 +28,36 @@ class AgentChoiceField extends \ChoiceField {
 }
 
 /**
+ * The agent whose internal notes can be used as reply drafts.
+ */
+class ResponseAgentChoiceField extends AgentChoiceField {
+    public function getChoices($verbose = false, $options = array()) {
+        if ($this->_choices === null || $verbose) {
+            global $cfg;
+            $this->_choices = array('' => __('— No response agent —'));
+
+            if ($cfg) {
+                $this->_choices += \Staff::getStaffMembers();
+            }
+        }
+
+        return $this->_choices;
+    }
+}
+
+/**
  * Loads help-topic choices lazily for the same bootstrap-safe behaviour.
  */
 class HelpTopicChoiceField extends \ChoiceField {
     public function getChoices($verbose = false, $options = array()) {
         if ($this->_choices === null || $verbose) {
             global $cfg;
-            $this->_choices = $cfg ? \Topic::getAllHelpTopics() : array();
+            // A named key keeps a selection containing only this option from
+            // looking like a sequential list of topic labels when read back.
+            $this->_choices = array('none' => __('— No help topic —'));
+            if ($cfg) {
+                $this->_choices += \Topic::getAllHelpTopics();
+            }
         }
 
         return $this->_choices;

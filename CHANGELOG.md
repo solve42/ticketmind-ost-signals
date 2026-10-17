@@ -1,3 +1,10 @@
+# 2026-10-17 1.3.0 - Response-note copy action & better filter
+## Feature
+- Added a No help topic option to the forwarding filter, selectable on its own or alongside specific help topics.
+- Added an optional response-agent selector. Double-clicking one of that agent’s internal notes copies it into the ticket reply editor. Selecting No response agent disables this action.
+- On initial setup, when exactly one agent name matches TicketMind, Ticket Agent, or AI Agent, it is proposed as the response agent. An explicitly saved empty selection is preserved.
+- The response agent can be the same as the forwarding filter agent or a different agent.
+
 # 2026-10-10 1.2.0 - Optional forwarding filters
 ## Feature
 - Added an optional agent selector that forwards only tickets visible to the selected agent.

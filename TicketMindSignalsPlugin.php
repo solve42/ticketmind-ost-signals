@@ -103,9 +103,8 @@ class TicketMindSignalsPlugin extends \Plugin {
       $helpTopicIds = ConfigValues::getSelectedHelpTopicIds();
       if ($helpTopicIds && !in_array((int) $ticket->getTopicId(), $helpTopicIds, true)) {
           $this->logDebug(sprintf(
-              'Forwarding skipped for ticket %s: help topic %s is not selected.',
-              $ticket->getNumber(),
-              $ticket->getTopicId()
+              'Forwarding skipped: %s; reason=help topic is not selected.',
+              $this->getSendingLogContext($ticket)
           ));
           return false;
       }
@@ -118,9 +117,8 @@ class TicketMindSignalsPlugin extends \Plugin {
       $agent = \Staff::lookup($agentId);
       if (!$agent) {
           $this->logError(sprintf(
-              'Forwarding skipped for ticket %s: configured agent %s was not found.',
-              $ticket->getNumber(),
-              $agentId
+              'Forwarding skipped: %s; reason=submitting agent was not found.',
+              $this->getSendingLogContext($ticket)
           ));
           return false;
       }
@@ -129,14 +127,29 @@ class TicketMindSignalsPlugin extends \Plugin {
       // is requested. There is no Ticket::PERM_VIEW constant.
       if (!$ticket->checkStaffPerm($agent)) {
           $this->logDebug(sprintf(
-              'Forwarding skipped for ticket %s: it is not visible to configured agent %s.',
-              $ticket->getNumber(),
-              $agentId
+              'Forwarding skipped: %s; reason=ticket is not visible to submitting agent.',
+              $this->getSendingLogContext($ticket)
           ));
           return false;
       }
 
       return true;
+  }
+
+  /**
+   * Use one machine-readable context format for every forwarding outcome.
+   * The submitting agent is the optional agent selected for forwarding.
+   */
+  private function getSendingLogContext(\Ticket $ticket): string {
+      $submittingAgentId = ConfigValues::getSelectedAgentId();
+      $helpTopicId = $ticket->getTopicId();
+
+      return sprintf(
+          'ticket_number=%s; submitting_agent_id=%s; help_topic_id=%s',
+          $ticket->getNumber(),
+          $submittingAgentId === null ? 'none' : $submittingAgentId,
+          is_numeric($helpTopicId) && (int) $helpTopicId > 0 ? $helpTopicId : 'none',
+      );
   }
 
   private function exportThreadEntries($thread): array {
@@ -189,14 +202,21 @@ class TicketMindSignalsPlugin extends \Plugin {
       ];
 
       $apiClient = $this->createRestApiClient();
+      $this->logDebug(sprintf('Signal: ticket.created sending; %s',$this->getSendingLogContext($ticket)));
       $success = $apiClient->sendSignal($data);
       if ($success) {
           $this->logDebug(
-              sprintf('Signal: ticket.created. Ticket send successfully - Number: %s', $ticket->getNumber())
+              sprintf(
+                  'Signal: ticket.created sent successfully; %s',
+                  $this->getSendingLogContext($ticket)
+              )
           );
       }else {
           $this->logError(
-              sprintf('Signal: ticket.created send failed - Number: %s', $ticket->getNumber())
+              sprintf(
+                  'Signal: ticket.created send failed; %s',
+                  $this->getSendingLogContext($ticket)
+              )
           );
       }
   }
@@ -239,18 +259,22 @@ class TicketMindSignalsPlugin extends \Plugin {
   }
 
   private function sendTicket2Rag(\Thread $thread, string $msgSource): bool {
-      $this->logDebug(sprintf('Command /addtorag from %s - ID: %s', $msgSource, $thread->getId()));
+      $ticket = $thread->getObject();
+      $context = $ticket instanceof \Ticket
+          ? $this->getSendingLogContext($ticket)
+          : 'ticket_number=unknown; submitting_agent_id=none; help_topic_id=unknown';
+      $this->logDebug(sprintf('Command: add_to_rag started; source=%s; %s', $msgSource, $context));
       $content = $this->exportThreadEntries($thread);
 
       $apiClient = $this->createRestApiClient();
       $success = $apiClient->sendTicket2Rag($content);
       if ($success) {
           $this->logDebug(
-              sprintf('Command /addtorag. Thread content send successfully - ID: %s', $thread->getId())
+              sprintf('Command: add_to_rag sent successfully; %s', $context)
           );
       }else {
           $this->logError(
-              sprintf('Command /addtorag send failed - ID: %s', $thread->getId())
+              sprintf('Command: add_to_rag send failed; %s', $context)
           );
       }
       return $success;
@@ -274,17 +298,31 @@ class TicketMindSignalsPlugin extends \Plugin {
 
 
       if ($data['extra']['type'] == 'N' && str_contains(strtolower($data['extra']['body']), '/addtorag')) {
+          $this->logDebug(sprintf(
+              'AddToRag: Signal: threadentry.created sending; %s',
+              $this->getSendingLogContext($ticket)
+          ));
           $this->sendTicket2Rag($entry->getThread(), "signal threadentry.created");
       } else {
           $apiClient = $this->createRestApiClient();
+          $this->logDebug(sprintf(
+              'Signal: threadentry.created sending; %s',
+              $this->getSendingLogContext($ticket)
+          ));
           $success = $apiClient->sendSignal($data);
           if ($success) {
               $this->logDebug(
-                  sprintf('Signal: threadentry.created. Ticket send successfully - ID: %s', $entry->getThreadId())
+                  sprintf(
+                      'Signal: threadentry.created sent successfully; %s',
+                      $this->getSendingLogContext($ticket)
+                  )
               );
           }else {
               $this->logError(
-                  sprintf('Signal: threadentry.created send failed - ID: %s', $entry->getThreadId())
+                  sprintf(
+                      'Signal: threadentry.created send failed; %s',
+                      $this->getSendingLogContext($ticket)
+                  )
               );
           }
       }
@@ -343,7 +381,82 @@ class TicketMindSignalsPlugin extends \Plugin {
           __('Add to RAG')
       );
 
+      $this->renderResponseAgentNoteCopyAction($ticket);
+
       $this->logDebug('(onTicketViewMoreAddToRag) Setup Add to Rag Button DONE.');
+  }
+
+  /**
+   * Make only internal notes authored by the configured response agent
+   * available as reply drafts. Entry IDs come from the server so a similarly
+   * named agent or an ordinary internal note can never enable the action.
+   */
+  private function renderResponseAgentNoteCopyAction(\Ticket $ticket): void {
+      $responseAgentId = ConfigValues::getResponseAgentId();
+      if ($responseAgentId === null) {
+          return;
+      }
+
+      $noteIds = array();
+      $thread = $ticket->getThread();
+      if ($thread) {
+          // Do not filter $thread->getEntries(): osTicket reuses that query
+          // later to render the entire thread.
+          $entries = \ThreadEntry::objects();
+          $entries->filter(array(
+              'thread_id' => $thread->getId(),
+              'type' => 'N',
+              // osTicket preserves the original author on edits; the last
+              // modifier is stored separately in editor/editor_type.
+              'staff_id' => $responseAgentId,
+          ));
+          foreach ($entries as $entry) {
+              $noteIds[] = (int) $entry->getId();
+          }
+      }
+
+      if (!$noteIds) {
+          return;
+      }
+
+      $noteIds = json_encode($noteIds, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+      echo <<<JS
+<style>
+[data-tm-response-note] .thread-body > div:first-child { cursor: copy; }
+</style>
+<script>
+$(function () {
+    var tmResponseNoteIds = {$noteIds};
+    $.each(tmResponseNoteIds, function (_, entryId) {
+        var entry = $('#thread-entry-' + entryId);
+        // osTicket keeps this wrapper, but changes its ID and replaces its
+        // contents after an edit. Delegate from it to retain author eligibility
+        // and always read the current body, including after repeated edits.
+        entry.attr('data-tm-response-note', '1')
+            .attr('title', __('Double-click to copy this response into the reply editor'))
+            .off('dblclick.tmResponseNote')
+            .on('dblclick.tmResponseNote', '.thread-body > div:first-child', function () {
+                var response = $('#response');
+                if (!response.length) {
+                    return;
+                }
+
+                $('#post-reply-tab').trigger('click');
+                // Keep the HTML (paragraphs, lists, links and inline styles)
+                // when inserting into osTicket's rich-text editor.
+                var html = $(this).html();
+                if (response.hasClass('richtext')) {
+                    response.redactor('source.setCode', html);
+                    response.redactor('editor.focus');
+                } else {
+                    response.val(this.innerText || $(this).text()).focus();
+                }
+                response.trigger('change').trigger('input');
+            });
+    });
+});
+</script>
+JS;
   }
 
   public function ajaxAddToRag($ticketId): void {

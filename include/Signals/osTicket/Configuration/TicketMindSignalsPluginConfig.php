@@ -66,13 +66,19 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
                 'default' => '',
                 'hint' => __('Optionally restrict forwarding to tickets that this agent is allowed to view. Leave this set to All agents to forward tickets as before.'),
             )),
+            'response_agent_id' => new ResponseAgentChoiceField(array(
+                'label' => __('Response agent'),
+                'default' => '',
+                'required' => false,
+                'hint' => __('Optional. Select an agent to enable double-clicking their internal notes in an open ticket to copy the content into the reply editor. Select No response agent to disable this action. On initial setup, a single agent whose name contains TicketMind, Ticket Agent, or AI Agent is proposed. You can use the same agent as the forwarding filter agent or choose a different one.'),
+            )),
             'selected_help_topic_ids' => new HelpTopicChoiceField(array(
                 'label' => __('Forward only selected help topics'),
                 'default' => array(),
                 'configuration' => array(
                     'multiselect' => true,
                 ),
-                'hint' => __('Optionally select one or more help topics to forward. Leave this empty to forward tickets from all help topics.'),
+                'hint' => __('Optionally select one or more help topics to forward. Select No help topic to include tickets without a help topic, on its own or alongside specific topics. Leave this empty to forward all tickets regardless of help topic.'),
             )),
             'with_content' => new ExtraBooleanField(array(
                 'label' => __('Include Content'),
@@ -93,6 +99,46 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
         $form = $this->getForm();
         include \TicketMindSignalsPlugin::PLUGIN_DIR . '/templates/configuration-form.tmpl.php';
     }
+
+    /**
+     * Suggest an AI agent on initial setup, preserving an explicitly saved
+     * empty selection. The suggestion is not stored until the form is saved.
+     */
+    function getForm($vars = array()) {
+        $form = parent::getForm($vars);
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $this->get('response_agent_id') === null) {
+            $suggestedAgentId = $this->getSuggestedResponseAgentId();
+            if ($suggestedAgentId !== null) {
+                $field = $form->getField('response_agent_id');
+                if ($field instanceof \FormField) {
+                    $field->setValue($suggestedAgentId);
+                }
+            }
+        }
+
+        return $form;
+    }
+
+    /**
+     * Return the single agent whose name looks like a TicketMind/AI agent.
+     */
+    private function getSuggestedResponseAgentId(): ?int {
+        global $cfg;
+        if (!$cfg) {
+            return null;
+        }
+
+        $matches = array();
+        foreach (\Staff::getStaffMembers() as $agentId => $agentName) {
+            if (preg_match('/ticketmind|ticket\\s+agent|ai\\s+agent/i', (string) $agentName)) {
+                $matches[] = (int) $agentId;
+            }
+        }
+
+        return count($matches) === 1 ? $matches[0] : null;
+    }
+
     function saveConfig() {
         try {
             $form = $this->getForm();
@@ -147,6 +193,7 @@ class TicketMindSignalsPluginConfig extends \PluginConfig implements \PluginCust
             $errors['tls_ca_file'] = __('Certificate file not found at this path.');
             return false;
         }
+
         return true;
     }
 }
